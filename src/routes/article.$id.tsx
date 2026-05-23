@@ -1,39 +1,9 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { Download, FileText, Presentation, UserRound, ChevronRight, BookOpen } from "lucide-react";
 import { formatDate, getArticle, getDepartment, getProfessor, findNavItemPath, medicalCurriculumData, getNavItem } from "../data/library";
 import { PageSkeleton } from "../components/Skeleton";
 import { NavTree } from "../components/NavTree";
-
-export const Route = createFileRoute("/article/$id")({
-  loader: ({ params }) => {
-    // Check hierarchical data first
-    const navItem = getNavItem(params.id);
-    if (navItem && navItem.type === "article") {
-       return { article: navItem };
-    }
-    
-    // Fallback to legacy data (to avoid breaking things)
-    const article = getArticle(params.id);
-    if (!article) throw notFound();
-    return { article };
-  },
-  head: ({ loaderData }) => {
-    const a = loaderData?.article;
-    const title = a ? `${a.title} — MedKnowledge` : "Maqola — MedKnowledge";
-    const desc = a && "excerpt" in a ? a.excerpt : "Tibbiy maqola.";
-    return {
-      meta: [
-        { title },
-        { name: "description", content: desc },
-        { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-      ],
-    };
-  },
-  pendingComponent: PageSkeleton,
-  component: ArticlePage,
-});
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0] ?? "");
@@ -55,8 +25,8 @@ function useActiveSection(ids: string[]) {
   return active;
 }
 
-function ArticlePage() {
-  const { id } = Route.useParams();
+export default function ArticleView() {
+  const { id } = useParams();
   
   // Simulation: Default to art-1 if requested (but route param takes precedence)
   const activeId = id || "art-1";
@@ -65,15 +35,16 @@ function ArticlePage() {
   
   // Content handling (Check hierarchical item first)
   const navItem = getNavItem(activeId);
-  const article = (navItem && navItem.type === "article") ? getArticle("1") : getArticle(activeId); // Default to one of the real articles for content if it's new mock data
+  const article = (navItem && navItem.type === "article") ? getArticle("1") : getArticle(activeId); 
   
-  // For the purpose of this task, we'll map the hierarchical art-1 to our existing detailed article content
   const displayArticle = article || getArticle("1")!; 
   const prof = getProfessor(displayArticle.professorId);
   const dept = getDepartment(displayArticle.departmentSlug);
   
-  const ids = displayArticle.sections.map((s) => s.id);
+  const ids = useMemo(() => displayArticle.sections.map((s) => s.id), [displayArticle]);
   const activeSection = useActiveSection(ids);
+
+  if (!displayArticle) return <PageSkeleton />;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -172,8 +143,7 @@ function ArticlePage() {
                 </div>
               </div>
               <Link
-                to="/professor/$id"
-                params={{ id: prof.id }}
+                to={`/professor/${prof.id}`}
                 className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-[#00796B] hover:underline"
               >
                 <UserRound size={13} /> Profilni ko'rish

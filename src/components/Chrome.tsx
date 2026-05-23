@@ -1,7 +1,9 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "react-router-dom";
 import { Stethoscope } from "lucide-react";
 
 export function Header() {
+  const location = useLocation();
+
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -21,9 +23,11 @@ export function Header() {
             <Link
               key={l.to}
               to={l.to}
-              activeOptions={{ exact: true }}
-              activeProps={{ className: "bg-primary-soft text-primary" }}
-              className="rounded-md px-3 py-1.5 font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className={`rounded-md px-3 py-1.5 font-medium transition-colors hover:bg-muted hover:text-foreground ${
+                location.pathname === l.to
+                  ? "bg-primary-soft text-primary"
+                  : "text-muted-foreground"
+              }`}
             >
               {l.label}
             </Link>

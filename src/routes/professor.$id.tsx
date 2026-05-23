@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Link, useParams } from "react-router-dom";
 import { ArrowRight, GraduationCap } from "lucide-react";
 import {
   formatDate,
@@ -8,32 +8,12 @@ import {
 } from "../data/library";
 import { PageSkeleton } from "../components/Skeleton";
 
-export const Route = createFileRoute("/professor/$id")({
-  loader: ({ params }) => {
-    if (!getProfessor(params.id)) throw notFound();
-    return {};
-  },
-  head: ({ params }) => {
-    const p = params?.id ? getProfessor(params.id) : undefined;
-    const title = p ? `${p.title} — MedKnowledge` : "Professor — MedKnowledge";
-    const desc = p?.bio ?? "Professor profili va taqdim etilgan materiallar.";
-    return {
-      meta: [
-        { title },
-        { name: "description", content: desc },
-        { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-      ],
-    };
-  },
-  pendingComponent: PageSkeleton,
-  component: ProfessorPage,
-});
+export default function ProfessorProfile() {
+  const { id } = useParams();
+  const prof = getProfessor(id || "");
+  const items = getProfessorArticles(id || "");
 
-function ProfessorPage() {
-  const { id } = Route.useParams();
-  const prof = getProfessor(id)!;
-  const items = getProfessorArticles(id);
+  if (!prof) return <PageSkeleton />;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
@@ -110,8 +90,7 @@ function ProfessorPage() {
             return (
               <li key={a.id}>
                 <Link
-                  to="/article/$id"
-                  params={{ id: a.id }}
+                  to={`/article/${a.id}`}
                   className="group flex items-start justify-between gap-4 p-5 transition hover:bg-primary-soft/40"
                 >
                   <div className="min-w-0">

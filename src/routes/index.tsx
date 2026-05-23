@@ -1,22 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { ArrowRight, FileText, Files, Search } from "lucide-react";
 import { articles, departments, formatDate, getLatestArticles, getProfessor } from "../data/library";
 import { DeptIcon } from "../components/DeptIcon";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Talabalar bosh sahifasi — MedKnowledge" },
-      { name: "description", content: "Bo'limlarni ko'ring, katalogni qidiring va professorlaringiz tomonidan tayyorlangan so'nggi tibbiy qo'llanmalarni kashf eting." },
-      { property: "og:title", content: "Talabalar bosh sahifasi — MedKnowledge" },
-      { property: "og:description", content: "Bo'limlarni va so'nggi tibbiy qonunlarni ko'ring." },
-    ],
-  }),
-  component: Dashboard,
-});
-
-function Dashboard() {
+export default function Dashboard() {
   const [q, setQ] = useState("");
   const latest = useMemo(() => getLatestArticles(3), []);
 
@@ -87,8 +75,7 @@ function Dashboard() {
                 return (
                   <li key={a.id}>
                     <Link
-                      to="/article/$id"
-                      params={{ id: a.id }}
+                      to={`/article/${a.id}`}
                       className="flex items-start justify-between gap-4 rounded-lg border bg-card p-4 transition hover:border-primary hover:shadow-sm"
                     >
                       <div>
@@ -155,8 +142,7 @@ function Dashboard() {
             return (
               <li key={a.id}>
                 <Link
-                  to="/article/$id"
-                  params={{ id: a.id }}
+                  to={`/article/${a.id}`}
                   className="group flex items-center justify-between gap-4 rounded-lg border bg-card p-4 transition hover:border-primary hover:shadow-sm"
                 >
                   <div className="min-w-0">

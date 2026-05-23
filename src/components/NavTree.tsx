@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ChevronDown, ChevronRight, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
 import { NavItem, findNavItemPath } from "../data/library";
@@ -39,8 +39,7 @@ function NavNode({ item, activeId, level }: { item: NavItem; activeId?: string; 
     return (
       <li>
         <Link
-          to="/article/$id"
-          params={{ id: item.id }}
+          to={`/article/${item.id}`}
           className={`flex items-center gap-2 rounded-md py-1.5 text-sm transition-colors ${paddingLeft} ${
             isActive
               ? "bg-[#E0F2F1] font-medium text-[#00796B]"
