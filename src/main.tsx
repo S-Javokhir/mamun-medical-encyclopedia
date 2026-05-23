@@ -5,6 +5,8 @@ import RootLayout from "./routes/__root";
 import Dashboard from "./routes/index";
 import ArticleView from "./routes/article.$id";
 import ProfessorProfile from "./routes/professor.$id";
+import Glossary from "./routes/glossary";
+import Departments from "./routes/departments";
 import "./styles.css";
 
 const rootElement = document.getElementById("root");
@@ -18,6 +20,8 @@ if (rootElement) {
             <Route path="/" element={<Dashboard />} />
             <Route path="/article/:id" element={<ArticleView />} />
             <Route path="/professor/:id" element={<ProfessorProfile />} />
+            <Route path="/glossary" element={<Glossary />} />
+            <Route path="/departments" element={<Departments />} />
           </Route>
         </Routes>
       </BrowserRouter>

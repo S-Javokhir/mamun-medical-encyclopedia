@@ -16,14 +16,16 @@ export function Header() {
             <span className="text-[11px] text-muted-foreground">Raqamli kutubxona</span>
           </span>
         </Link>
-        <nav className="flex items-center gap-1 text-sm">
+        <nav className="flex items-center gap-1 text-xs sm:text-sm">
           {[
             { to: "/", label: "Bosh sahifa" },
+            { to: "/departments", label: "Bo'limlar" },
+            { to: "/glossary", label: "Lug'at" },
           ].map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className={`rounded-md px-3 py-1.5 font-medium transition-colors hover:bg-muted hover:text-foreground ${
+              className={`rounded-md px-2 py-1.5 font-medium transition-colors hover:bg-muted hover:text-foreground sm:px-3 ${
                 location.pathname === l.to
                   ? "bg-primary-soft text-primary"
                   : "text-muted-foreground"

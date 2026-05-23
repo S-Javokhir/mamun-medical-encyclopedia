@@ -42,6 +42,21 @@ export type Article = {
   downloads: Download[];
 };
 
+export interface NavItem {
+  id: string;
+  title: string;
+  type: "subject" | "module" | "topic" | "article";
+  icd11?: string;
+  excerpt?: string;
+  children?: NavItem[];
+}
+
+export interface GlossaryTerm {
+  term: string;
+  definition: string;
+  category: string;
+}
+
 export const departments: Department[] = [
   { slug: "cardiology", name: "Kardiologiya", icon: "Heart", articleCount: 42, pdfCount: 28, blurb: "Yurak, qon tomirlari va qon aylanishi" },
   { slug: "neurology", name: "Nevrologiya", icon: "Brain", articleCount: 37, pdfCount: 24, blurb: "Bosh miya, umurtqa pog'onasi va nervlar" },
@@ -385,14 +400,6 @@ export function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("uz-UZ", { year: "numeric", month: "short", day: "numeric" });
 }
 
-export interface NavItem {
-  id: string;
-  title: string;
-  type: "subject" | "module" | "topic" | "article";
-  icd11?: string;
-  children?: NavItem[];
-}
-
 export const medicalCurriculumData: NavItem[] = [
   {
     id: "subj-1",
@@ -474,3 +481,35 @@ export function getNavItem(id: string, items: NavItem[] = medicalCurriculumData)
   }
   return null;
 }
+
+export const getGlossaryByLetter = (letter: string) => {
+  return glossaryTerms.filter((t) => t.term.toLowerCase().startsWith(letter.toLowerCase()));
+};
+
+export const glossaryTerms: GlossaryTerm[] = [
+  { term: "Abssess", definition: "To'qimalarning yiringli yallig'lanishi natijasida hosil bo'lgan bo'shliq.", category: "Umumiy xirurgiya" },
+  { term: "Adrenalin", definition: "Buyrak usti bezining mag'iz qavatidan ajraladigan gormon.", category: "Endokrinologiya" },
+  { term: "Anemiya", definition: "Qonda gemoglobin va eritrotsitlar miqdorining kamayishi.", category: "Gematologiya" },
+  { term: "Aorta", definition: "Yurakning chap qorinchasidan chiquvchi eng yirik qon tomiri.", category: "Kardiologiya" },
+  { term: "Bradikardiya", definition: "Yurak urishi tezligining pasayishi (minutiga 60 tadan kam).", category: "Kardiologiya" },
+  { term: "Bronxit", definition: "Bronxlarning yallig'lanishi.", category: "Pulmonologiya" },
+  { term: "Vaksina", definition: "Kasalliklarga qarshi immunitet hosil qilish uchun yuboriladigan preparat.", category: "Immunologiya" },
+  { term: "Gastrit", definition: "Me'da shilliq qavatining yallig'lanishi.", category: "Gastroenterologiya" },
+  { term: "Gematoma", definition: "To'qimalarda qon to'planishi (ko'karish).", category: "Travmatologiya" },
+  { term: "Gipoksiya", definition: "To'qimalarning kislorod bilan yetarli darajada ta'minlanmasligi.", category: "Patofiziologiya" },
+  { term: "Diabet", definition: "Qonda qand miqdorining oshishi bilan kechadigan kasalliklar guruhi.", category: "Endokrinologiya" },
+  { term: "Insult", definition: "Miya qon aylanishining o'tkir buzilishi.", category: "Nevrologiya" },
+  { term: "Kardiologiya", definition: "Yurak va qon tomirlarini o'rganuvchi fan.", category: "Tibbiyot sohasi" },
+  { term: "Leykotsit", definition: "Qonning oq hujayralari, organizmni himoya qiladi.", category: "Gematologiya" },
+  { term: "Meningit", definition: "Miya pardalarining yallig'lanishi.", category: "Yuqumli kasalliklar" },
+  { term: "Narkoz", definition: "Sun'iy uyqu va og'riqsizlantirish holati.", category: "Anesteziologiya" },
+  { term: "Osteoporoz", definition: "Suyak to'qimasining zichligi kamayishi va mo'rtlashishi.", category: "Revmatologiya" },
+  { term: "Pnevmoniya", definition: "O'pka to'qimalarining yallig'lanishi (zotiljam).", category: "Pulmonologiya" },
+  { term: "Sepsis", definition: "Organizmning infektsiyaga umumiy og'ir reaksiyasi (qon zaharlanishi).", category: "Reanimatologiya" },
+  { term: "Tromb", definition: "Qon tomiri ichida hosil bo'lgan qon laxtasi.", category: "Gematologiya" },
+  { term: "Ultratovush", definition: "Ichki a'zolarni tekshirishda foydalaniladigan yuqori chastotali tovush to'lqinlari.", category: "Diagnostika" },
+  { term: "Farmakologiya", definition: "Dorivor moddalarning xususiyatlarini o'rganuvchi fan.", category: "Tibbiyot sohasi" },
+  { term: "Xolesterin", definition: "Hujayra membranalarida mavjud bo'lgan yog'simon modda.", category: "Biokimyo" },
+  { term: "Sistit", definition: "Qovuq shilliq qavatining yallig'lanishi.", category: "Urologiya" },
+  { term: "Eritrotsit", definition: "Qonning qizil hujayralari, kislorod tashiydi.", category: "Gematologiya" },
+];
