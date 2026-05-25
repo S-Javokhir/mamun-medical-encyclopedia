@@ -91,13 +91,21 @@ export default function LibraryCategory() {
             </p>
 
             <div className="mt-auto space-y-1">
-              <div className="text-sm font-bold text-foreground">
-                {child.topicCount && <span>{child.topicCount} Topics</span>}
-                {!child.topicCount && child.children && <span>{child.children.length} Topics</span>}
-              </div>
-              <div className="text-xs font-medium text-muted-foreground">
-                {child.articleCount || 0} Academic Articles
-              </div>
+              {child.type === 'article' ? (
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs font-bold text-primary">
+                  Maqolani o'qish →
+                </div>
+              ) : (
+                <>
+                  <div className="text-sm font-bold text-foreground">
+                    {child.topicCount && <span>{child.topicCount} Mavzu</span>}
+                    {!child.topicCount && child.children && <span>{child.children.length} Mavzu</span>}
+                  </div>
+                  <div className="text-xs font-medium text-muted-foreground">
+                    {child.articleCount || 0} Akademik maqola
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="mt-6 flex justify-end">

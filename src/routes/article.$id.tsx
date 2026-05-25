@@ -132,6 +132,46 @@ export default function ArticleView() {
                       )}
                     </figure>
                   )}
+                  {section.videoUrl && (
+                    <div className="my-10 overflow-hidden rounded-3xl bg-muted/30 p-4 ring-1 ring-border">
+                      <div className="aspect-video w-full overflow-hidden rounded-2xl shadow-lg">
+                        <iframe
+                          src={section.videoUrl}
+                          className="h-full w-full border-0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    </div>
+                  )}
+                  {section.table && (
+                    <div className="my-10 overflow-hidden rounded-3xl border bg-surface shadow-sm">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left text-sm">
+                          <thead className="bg-muted/50 border-b">
+                            <tr>
+                              {section.table.headers.map((header, i) => (
+                                <th key={i} className="px-6 py-4 font-bold text-foreground">
+                                  {header}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y">
+                            {section.table.rows.map((row, i) => (
+                              <tr key={i} className="transition-colors hover:bg-muted/30">
+                                {row.map((cell, j) => (
+                                  <td key={j} className="px-6 py-4 text-muted-foreground">
+                                    {cell}
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

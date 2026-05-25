@@ -31,6 +31,11 @@ export type ArticleSection = {
   paragraphs: string[];
   image?: string;
   imageCaption?: string;
+  videoUrl?: string;
+  table?: {
+    headers: string[];
+    rows: string[][];
+  };
 };
 
 export type Article = {
@@ -66,12 +71,15 @@ export interface GlossaryTerm {
 }
 
 export const departments: Department[] = [
-  { slug: "cardiology", name: "Kardiologiya", icon: "Heart", articleCount: 42, pdfCount: 28, blurb: "Yurak, qon tomirlari va qon aylanishi" },
-  { slug: "neurology", name: "Nevrologiya", icon: "Brain", articleCount: 37, pdfCount: 24, blurb: "Bosh miya, umurtqa pog'onasi va nervlar" },
-  { slug: "anatomy", name: "Anatomiya", icon: "Bone", articleCount: 156, pdfCount: 89, blurb: "Gros va mikroskopik anatomiya" },
-  { slug: "histology", name: "Histologiya", icon: "Microscope", articleCount: 92, pdfCount: 45, blurb: "Hujayra va to'qimalar darajasidagi hayot" },
-  { slug: "physiology", name: "Fiziyologiya", icon: "Activity", articleCount: 110, pdfCount: 67, blurb: "Organizmning hayotiy funktsiyalari mexanikasi" },
-  { slug: "biochemistry", name: "Bioximiya", icon: "Dna", articleCount: 78, pdfCount: 34, blurb: "Molekulyar darajadagi biologik jarayonlar" },
+  { slug: "cardiology", name: "Kardiologiya", icon: "Heart", articleCount: 1, pdfCount: 1, blurb: "Yurak, qon tomirlari va qon aylanishi" },
+  { slug: "neurology", name: "Nevrologiya", icon: "Brain", articleCount: 1, pdfCount: 1, blurb: "Bosh miya, umurtqa pog'onasi va nervlar" },
+  { slug: "anatomy", name: "Anatomiya", icon: "Bone", articleCount: 1, pdfCount: 1, blurb: "Gros va mikroskopik anatomiya" },
+  { slug: "histology", name: "Histologiya", icon: "Microscope", articleCount: 2, pdfCount: 2, blurb: "Hujayra va to'qimalar darajasidagi hayot" },
+  { slug: "physiology", name: "Fiziyologiya", icon: "Activity", articleCount: 2, pdfCount: 2, blurb: "Organizmning hayotiy funktsiyalari mexanikasi" },
+  { slug: "biochemistry", name: "Bioximiya", icon: "Dna", articleCount: 0, pdfCount: 0, blurb: "Molekulyar darajadagi biologik jarayonlar" },
+  { slug: "pediatrics", name: "Pediatriya", icon: "Baby", articleCount: 3, pdfCount: 3, blurb: "Bolalar salomatligi va kasalliklari" },
+  { slug: "surgery", name: "Xirurgiya", icon: "ScanLine", articleCount: 2, pdfCount: 2, blurb: "Operativ tibbiyot va jarrohlik" },
+  { slug: "pharmacology", name: "Farmakologiya", icon: "Dna", articleCount: 1, pdfCount: 1, blurb: "Dorilar va ularning ta'siri" },
 ];
 
 export const professors: Professor[] = [
@@ -106,6 +114,26 @@ export const professors: Professor[] = [
     bio: "Serebrovaskulyar kasalliklar va klinik neyroanatomiya bo'yicha mutaxassis nevrolog.",
     researchInterests: ["Ishemik insult", "Neyrotasvirlash"],
     credentials: ["Moskva davlat tibbiyot universiteti tibbiyot fanlari doktori (MD, PhD)"],
+  },
+  {
+    id: "safarov",
+    fullName: "Omon Safarov",
+    title: "Prof. Dr. Safarov",
+    department: "Pediatriya",
+    avatar: "https://i.pravatar.cc/240?img=13",
+    bio: "Bolalar kardiologiyasi va rivojlanish fiziologiyasi bo'yicha 25 yillik tajribaga ega.",
+    researchInterests: ["Neonatologiya", "Bolalar infeksiyalari"],
+    credentials: ["Samarqand Davlat Tibbiyot Universiteti PhD"],
+  },
+  {
+    id: "ergashev",
+    fullName: "Jasur Ergashev",
+    title: "Prof. Dr. Ergashev",
+    department: "Xirurgiya",
+    avatar: "https://i.pravatar.cc/240?img=14",
+    bio: "Abdominal xirurgiya va laparoskopiya bo'yicha yetakchi mutaxassis.",
+    researchInterests: ["Minimal invaziv xirurgiya", "Onkoxirurgiya"],
+    credentials: ["Respublika Shoshilinch Tibbiy Yordam Ilmiy Markazi doktori"],
   },
 ];
 
@@ -165,6 +193,32 @@ export const articles: Article[] = [
     downloads: [{ filename: "Epiteliya_gistologiyasi.pdf", type: "PDF", sizeMB: 2.8 }]
   },
   {
+    id: "art-hist-2",
+    title: "Qon to'qimasi gistologiyasi",
+    icd11: "XA5Y",
+    departmentSlug: "histology",
+    professorId: "karimov",
+    publishedAt: "2026-05-25",
+    excerpt: "Qon - suyuq holatdagi biriktiruvchi to'qima bo'lib, u shaklli elementlar va plazmadan iborat.",
+    badges: ["HISTOLOGY", "Blood"],
+    sections: [
+      {
+        id: "blood-table",
+        heading: "Qonning shaklli elementlari",
+        paragraphs: ["Qon hujayralarining asosiy turlari va ularning funktsiyalari:"],
+        table: {
+          headers: ["Element", "Miqdori (1 mkl)", "Asosiy vazifasi"],
+          rows: [
+            ["Eritrotsitlar", "4.5 - 5.0 mln", "Gidrogen tashish (O2, CO2)"],
+            ["Leykotsitlar", "4,000 - 9,000", "Himoya (fagotsitoz, immunitet)"],
+            ["Trombotsitlar", "180,000 - 320,000", "Qon ivishida ishtirok etish"]
+          ]
+        }
+      }
+    ],
+    downloads: [{ filename: "Qon_gistologiyasi.pdf", type: "PDF", sizeMB: 1.8 }]
+  },
+  {
     id: "art-phys-1",
     title: "Gemonamika asoslari",
     icd11: "BB05.1",
@@ -181,6 +235,203 @@ export const articles: Article[] = [
       }
     ],
     downloads: [{ filename: "Qon_aylanish_fiziyologiyasi.pdf", type: "PDF", sizeMB: 5.2 }]
+  },
+  {
+    id: "art-phys-2",
+    title: "Nerv tizimi fiziologiyasi",
+    icd11: "XA2Q",
+    departmentSlug: "physiology",
+    professorId: "petrova",
+    publishedAt: "2026-05-25",
+    excerpt: "Nerv tizimi organizmning barcha a'zolari faoliyatini boshqaradi va tashqi muhit bilan bog'liqligini ta'minlaydi.",
+    badges: ["PHYSIOLOGY", "Neuroscience"],
+    sections: [
+      {
+        id: "nervous-intro",
+        heading: "Reflektor yoy",
+        paragraphs: [
+          "Nerv faoliyatining asosi refleks hisoblanadi. Reflektor yoy 5 ta qismdan iborat bo'ladi.",
+          "Quyidagi rasmda reflektor yoyning sxemasi ko'rsatilgan:"
+        ],
+        image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=800",
+        imageCaption: "Nerv impulslarining o'tish yo'li."
+      }
+    ],
+    downloads: [{ filename: "Nerv_fiziyologiyasi.pdf", type: "PDF", sizeMB: 2.1 }]
+  },
+  {
+    id: "art-ped-1",
+    title: "Bolalarda o'sish va rivojlanish ko'rsatkichlari",
+    icd11: "2A00.0",
+    departmentSlug: "pediatrics",
+    professorId: "safarov",
+    publishedAt: "2026-05-24",
+    excerpt: "Bolalik davrida o'sish va rivojlanish jarayonlari ularning yoshiga mos ravishda doimiy nazorat qilinishi kerak.",
+    badges: ["PEDIATRICS", "Growth"],
+    sections: [
+      {
+        id: "growth-table",
+        heading: "Yoshga doir o'rtacha ko'rsatkichlar",
+        paragraphs: ["Quyidagi jadvalda bolalarning yoshi bo'yicha o'rtacha bo'yi va vazni keltirilgan:"],
+        table: {
+          headers: ["Yosh", "Vazn (kg)", "Bo'y (cm)"],
+          rows: [
+            ["Yangi tug'ilgan", "3.2 - 3.5", "50 - 52"],
+            ["6 oy", "7.5 - 8.0", "66 - 68"],
+            ["1 yosh", "10.0 - 10.5", "74 - 76"],
+            ["2 yosh", "12.0 - 13.0", "86 - 88"]
+          ]
+        }
+      }
+    ],
+    downloads: [{ filename: "Bolalar_rivojlanish_jadvali.pdf", type: "PDF", sizeMB: 1.5 }]
+  },
+  {
+    id: "art-surg-1",
+    title: "O'tkir appenditsit: Tashxis va xirurgik muolaja",
+    icd11: "DB10",
+    departmentSlug: "surgery",
+    professorId: "ergashev",
+    publishedAt: "2026-05-25",
+    excerpt: "O'tkir appenditsit qorin bo'shlig'ining eng ko'p uchraydigan o'tkir xirurgik kasalliklaridan biridir.",
+    badges: ["SURGERY", "Emergency"],
+    sections: [
+      {
+        id: "surg-intro",
+        heading: "Laparoskopik appendektomiya",
+        paragraphs: [
+          "Hozirgi vaqtda laparoskopik usul appenditsitni davolashda 'oltin standart' hisoblanadi. Bu usul kam jarohatli bo'lib, bemorning tezroq oyoqqa turishini ta'minlaydi.",
+          "Video qo'llanmada operatsiya bosqichlari ko'rsatilgan:"
+        ],
+        videoUrl: "https://www.youtube.com/embed/S2p-L6u4E_k"
+      }
+    ],
+    downloads: [{ filename: "Xirurgiya_protokol.pdf", type: "PDF", sizeMB: 3.2 }]
+  },
+  {
+    id: "art-ped-2",
+    title: "Milliy emlash kalendari",
+    icd11: "XA9S2",
+    departmentSlug: "pediatrics",
+    professorId: "safarov",
+    publishedAt: "2026-05-25",
+    excerpt: "Bolalarni yuqumli kasalliklardan himoya qilishning eng samarali usuli bu o'z vaqtida emlashdir.",
+    badges: ["PEDIATRICS", "Vaccination"],
+    sections: [
+      {
+        id: "vax-table",
+        heading: "Emlash jadvali (0-1 yosh)",
+        paragraphs: ["Bolaning birinchi yoshida o'tkaziladigan asosiy emlashlar:"],
+        table: {
+          headers: ["Muddat", "Vaktsina turi", "Kasallikka qarshi"],
+          rows: [
+            ["Tug'ilganda", "VB, BSJ-1", "Gepatit B, Tuberkulyoz"],
+            ["2 oylik", "OPV-1, AKDS-1", "Polio, Bo'g'ma, Qo'shma"],
+            ["3 oylik", "OPV-2, AKDS-2", "Polio, Bo'g'ma, Qo'shma"],
+            ["4 oylik", "OPV-3, AKDS-3", "Polio, Bo'g'ma, Qo'shma"]
+          ]
+        }
+      }
+    ],
+    downloads: [{ filename: "Emlash_kalendari_2026.pdf", type: "PDF", sizeMB: 1.2 }]
+  },
+  {
+    id: "art-card-1",
+    title: "Yurak ishemik kasalligi",
+    icd11: "BA41",
+    departmentSlug: "cardiology",
+    professorId: "alimov",
+    publishedAt: "2026-05-25",
+    excerpt: "Yurak ishemik kasalligi (YIK) - yurak mushaklarining qon bilan ta'minlanishi buzilishi natijasida kelib chiqadigan patologik holat.",
+    badges: ["CARDIOLOGY", "Ischemia"],
+    sections: [
+      {
+        id: "card-video",
+        heading: "YIK patogenezi",
+        paragraphs: ["Quyidagi video lavhada koronar arteriyalarning torayishi va plastinkalar hosil bo'lish jarayoni ko'rsatilgan:"],
+        videoUrl: "https://www.youtube.com/embed/H05fM6-M6_8"
+      }
+    ],
+    downloads: [{ filename: "Ishemik_kasalliklar_davolash.pdf", type: "PDF", sizeMB: 2.4 }]
+  },
+  {
+    id: "art-ped-3",
+    title: "Bolalarda vitamin D tanqisligi",
+    icd11: "5B56",
+    departmentSlug: "pediatrics",
+    professorId: "safarov",
+    publishedAt: "2026-05-25",
+    excerpt: "Vitamin D tanqisligi bolalarda suyak-mushak tizimi rivojlanishida salbiy oqibatlarga olib kelishi mumkin.",
+    badges: ["PEDIATRICS", "Nutrition"],
+    sections: [
+      {
+        id: "vitd-intro",
+        heading: "Oldini olish choralari",
+        paragraphs: ["Quyidagi jadvalda yoshga doir profilaktik dozalar keltirilgan:"],
+        table: {
+          headers: ["Yosh", "Sutkalik doza (IU)", "Izoh"],
+          rows: [
+            ["0 - 12 oy", "400 - 500", "Profilaktika uchun"],
+            ["1 - 3 yosh", "600", "Doimiy qabul qilish tavsiya etiladi"],
+            ["4 - 8 yosh", "600 - 800", "Mavsumiy (qish oylarida)"]
+          ]
+        }
+      }
+    ],
+    downloads: [{ filename: "Vitamin_D_protokol.pdf", type: "PDF", sizeMB: 0.9 }]
+  },
+  {
+    id: "art-surg-2",
+    title: "Qorin churralari tasnifi",
+    icd11: "DD0Z",
+    departmentSlug: "surgery",
+    professorId: "ergashev",
+    publishedAt: "2026-05-25",
+    excerpt: "Qorin churralari (grijalar) joylashuvi va kelib chiqishi bo'yicha bir necha guruhlarga bo'linadi.",
+    badges: ["SURGERY", "Hernia"],
+    sections: [
+      {
+        id: "hernia-types",
+        heading: "Asosiy turlari",
+        paragraphs: ["Lokalizatsiyasi bo'yicha churralar quyidagilarga bo'linadi:"],
+        table: {
+          headers: ["Turi", "Lokalizatsiya", "Tez-tezligi"],
+          rows: [
+            ["Chov churrasi", "Chov kanali", "75% - 80%"],
+            ["Son churrasi", "Son kanali", "5% - 10%"],
+            ["Kindik churrasi", "Kindik halqasi", "3% - 5%"]
+          ]
+        }
+      }
+    ],
+    downloads: [{ filename: "Churra_turlari.pdf", type: "PDF", sizeMB: 1.4 }]
+  },
+  {
+    id: "art-phar-1",
+    title: "Antibiotiklar: Guruhlar va ta'sir mexanizmi",
+    icd11: "XA8T2",
+    departmentSlug: "pharmacology",
+    professorId: "alimov", // Placeholder
+    publishedAt: "2026-05-25",
+    excerpt: "Antibiotiklar bakterial infeksiyalarni davolashda ishlatiladigan kimyoviy moddalardir.",
+    badges: ["PHARMACOLOGY", "Antibiotics"],
+    sections: [
+      {
+        id: "vax-table",
+        heading: "Asosiy guruhlar",
+        paragraphs: ["Antibiotiklarning asosiy guruhlari va vakillari:"],
+        table: {
+          headers: ["Guruh", "Vakillari", "Ta'sir mexanizmi"],
+          rows: [
+            ["Penitsillinlar", "Amoksitsillin, Ampitsillin", "Hujayra devori sintezini buzish"],
+            ["Sevalosporinlar", "Sefazolin, Seftriakson", "Hujayra devori sintezini buzish"],
+            ["Makrolidlar", "Azitromitsin, Eritromitsin", "Oqsil sintezini to'xtatish"],
+            ["Aminoglikozidlar", "Gentamitsin, Amikatsin", "DNK sintezini buzish"]
+          ]
+        }
+      }
+    ],
+    downloads: [{ filename: "Antibiotiklar_tasnifi.pdf", type: "PDF", sizeMB: 1.1 }]
   }
 ];
 
@@ -192,8 +443,8 @@ export const medicalCurriculumData: NavItem[] = [
     type: "subject",
     description: "Inson tanasining tuzilishi, a'zolari va tizimlarini o'rganuvchi asosiy tibbiy fan.",
     icon: "Bone",
-    topicCount: 5,
-    articleCount: 156,
+    topicCount: 1,
+    articleCount: 1,
     children: [
       {
         id: "mod-1",
@@ -202,8 +453,8 @@ export const medicalCurriculumData: NavItem[] = [
         type: "module",
         description: "Skelet tizimi va suyaklarning batafsil o'rganilishi.",
         icon: "Bone",
-        topicCount: 12,
-        articleCount: 45,
+        topicCount: 1,
+        articleCount: 1,
         children: [
           {
             id: "topic-1",
@@ -236,8 +487,8 @@ export const medicalCurriculumData: NavItem[] = [
     type: "subject",
     description: "To'qimalar va hujayralarning mikroskopik darajadagi tuzilishini o'rganadi.",
     icon: "Microscope",
-    topicCount: 4,
-    articleCount: 92,
+    topicCount: 1,
+    articleCount: 2,
     children: [
       {
         id: "mod-h1",
@@ -246,8 +497,10 @@ export const medicalCurriculumData: NavItem[] = [
         type: "module",
         description: "Hujayra hayotiy sikli va organellalar.",
         icon: "Microscope",
+        articleCount: 2,
         children: [
-          { id: "art-hist-1", title: "Epiteliya to'qimasi morfologiyasi", type: "article", icd11: "XA01.2" }
+          { id: "art-hist-1", title: "Epiteliya to'qimasi morfologiyasi", type: "article", icd11: "XA01.2" },
+          { id: "art-hist-2", title: "Qon to'qimasi gistologiyasi", type: "article", icd11: "XA5Y" }
         ]
       }
     ]
@@ -259,8 +512,8 @@ export const medicalCurriculumData: NavItem[] = [
     type: "subject",
     description: "Organizmning hayotiy jarayonlari va funktsiyalarini o'rganuvchi fan.",
     icon: "Activity",
-    topicCount: 6,
-    articleCount: 110,
+    topicCount: 2,
+    articleCount: 2,
     children: [
       {
         id: "mod-p1",
@@ -269,8 +522,21 @@ export const medicalCurriculumData: NavItem[] = [
         type: "module",
         description: "Qon tizimi va qon hosil bo'lish jarayonlari.",
         icon: "Activity",
+        articleCount: 1,
         children: [
           { id: "art-phys-1", title: "Gemonamika asoslari", type: "article", icd11: "BB05.1" }
+        ]
+      },
+      {
+        id: "mod-p2",
+        title: "Neyrofiziologiya",
+        englishTitle: "Neurophysiology",
+        type: "module",
+        description: "Nerv tizimi funktsiyalari.",
+        icon: "Activity",
+        articleCount: 1,
+        children: [
+          { id: "art-phys-2", title: "Nerv tizimi fiziologiyasi", type: "article", icd11: "XA2Q" }
         ]
       }
     ]
@@ -282,9 +548,84 @@ export const medicalCurriculumData: NavItem[] = [
     type: "subject",
     description: "Biologik molekulalar va metabolizm jarayonlarini kimyoviy jihatdan o'rganadi.",
     icon: "Dna",
-    topicCount: 3,
-    articleCount: 78,
+    topicCount: 0,
+    articleCount: 0,
     children: []
+  },
+  {
+    id: "subj-pharm",
+    title: "Farmakologiya",
+    englishTitle: "Pharmacology",
+    type: "subject",
+    description: "Dorilar va ularning organizmga ta'sirini o'rganuvchi fan.",
+    icon: "Dna",
+    topicCount: 1,
+    articleCount: 1,
+    children: [
+      {
+        id: "mod-pharm-1",
+        title: "Umumiy farmakologiya",
+        englishTitle: "General Pharmacology",
+        type: "module",
+        description: "Farmakodinamika va farmakokinetika asoslari.",
+        icon: "Dna",
+        articleCount: 1,
+        children: [
+          { id: "art-phar-1", title: "Antibiotiklar: Guruhlar va ta'sir mexanizmi", type: "article", icd11: "XA8T2" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "subj-5",
+    title: "Pediatriya",
+    englishTitle: "Pediatrics",
+    type: "subject",
+    description: "Bolalar kasalliklari va rivojlanishini o'rganuvchi fan.",
+    icon: "Baby",
+    topicCount: 1,
+    articleCount: 3,
+    children: [
+      {
+        id: "mod-ped-1",
+        title: "Propedevtika",
+        englishTitle: "Propaedeutics",
+        type: "module",
+        description: "Bolalar kasalliklari propedevtikasi asoslari.",
+        icon: "Baby",
+        articleCount: 3,
+        children: [
+          { id: "art-ped-1", title: "Bolalarda o'sish va rivojlanish ko'rsatkichlari", type: "article", icd11: "2A00.0" },
+          { id: "art-ped-2", title: "Milliy emlash kalendari", type: "article", icd11: "XA9S2" },
+          { id: "art-ped-3", title: "Bolalarda vitamin D tanqisligi", type: "article", icd11: "5B56" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "subj-6",
+    title: "Xirurgiya",
+    englishTitle: "Surgery",
+    type: "subject",
+    description: "Operativ yo'l bilan davolash usullarini o'rganuvchi fan.",
+    icon: "ScanLine",
+    topicCount: 1,
+    articleCount: 2,
+    children: [
+      {
+        id: "mod-surg-1",
+        title: "Umumiy xirurgiya",
+        englishTitle: "General Surgery",
+        type: "module",
+        description: "Xirurgik kasalliklar umumiy diagnostikasi.",
+        icon: "ScanLine",
+        articleCount: 2,
+        children: [
+          { id: "art-surg-1", title: "O'tkir appenditsit: Tashxis va xirurgik muolaja", type: "article", icd11: "DB10" },
+          { id: "art-surg-2", title: "Qorin churralari tasnifi", type: "article", icd11: "DD0Z" }
+        ]
+      }
+    ]
   }
 ];
 
