@@ -1,6 +1,25 @@
-import { Activity, Baby, Bone, Brain, Heart, ScanLine, type LucideIcon } from "lucide-react";
+import { 
+  Activity, 
+  Baby, 
+  Bone, 
+  Brain, 
+  Heart, 
+  ScanLine, 
+  Dna, 
+  Microscope,
+  type LucideIcon 
+} from "lucide-react";
 
-const map: Record<string, LucideIcon> = { Heart, Brain, Bone, Baby, Activity, ScanLine };
+const map: Record<string, LucideIcon> = { 
+  Heart, 
+  Brain, 
+  Bone, 
+  Baby, 
+  Activity, 
+  ScanLine,
+  Dna,
+  Microscope
+};
 
 export function DeptIcon({ name, className }: { name: string; className?: string }) {
   const Icon = map[name] ?? Heart;

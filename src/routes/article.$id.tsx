@@ -1,184 +1,197 @@
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
-import { Download, FileText, Presentation, UserRound, ChevronRight, BookOpen } from "lucide-react";
-import { formatDate, getArticle, getDepartment, getProfessor, findNavItemPath, medicalCurriculumData, getNavItem } from "../data/library";
-import { PageSkeleton } from "../components/Skeleton";
-import { NavTree } from "../components/NavTree";
+import { useParams, Link, Navigate } from "react-router-dom";
+import { 
+  ChevronRight, 
+  ChevronDown, 
+  FileText, 
+  Download, 
+  ArrowLeft,
+  Quote
+} from "lucide-react";
+import { 
+  getArticle, 
+  getProfessor, 
+  findNavItemPath, 
+  getNavItem, 
+  medicalCurriculumData,
+  NavItem
+} from "../data/library";
 
-function useActiveSection(ids: string[]) {
-  const [active, setActive] = useState(ids[0] ?? "");
-  useEffect(() => {
-    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    if (!els.length) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) setActive(visible[0].target.id);
-      },
-      { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, [ids.join("|")]);
-  return active;
+function SidebarNode({ item, currentId, depth = 0 }: { item: NavItem, currentId: string, depth?: number }) {
+  const isActive = item.id === currentId;
+  const hasChildren = item.children && item.children.length > 0;
+  
+  return (
+    <div className="mb-1">
+      <Link
+        to={item.type === 'article' ? `/article/${item.id}` : `/library/${item.id}`}
+        className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm transition-all ${
+          isActive 
+            ? "bg-primary-soft text-primary font-bold" 
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+        }`}
+        style={{ paddingLeft: `${16 + depth * 12}px` }}
+      >
+        {item.type === 'article' ? <FileText size={16} /> : <ChevronRight size={16} className={hasChildren ? "opacity-100" : "opacity-0"} />}
+        <span className="truncate">{item.title}</span>
+      </Link>
+      {hasChildren && (
+        <div className="mt-1">
+          {item.children?.map(child => (
+            <SidebarNode key={child.id} item={child} currentId={currentId} depth={depth + 1} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function ArticleView() {
   const { id } = useParams();
+  const article = getArticle(id || "");
+  const path = findNavItemPath(id || "");
   
-  // Simulation: Default to art-1 if requested (but route param takes precedence)
-  const activeId = id || "art-1";
-  
-  const breadcrumbPath = useMemo(() => findNavItemPath(activeId), [activeId]);
-  
-  // Content handling (Check hierarchical item first)
-  const navItem = getNavItem(activeId);
-  const article = (navItem && navItem.type === "article") ? getArticle("1") : getArticle(activeId); 
-  
-  const displayArticle = article || getArticle("1")!; 
-  const prof = getProfessor(displayArticle.professorId);
-  const dept = getDepartment(displayArticle.departmentSlug);
-  
-  const ids = useMemo(() => displayArticle.sections.map((s) => s.id), [displayArticle]);
-  const activeSection = useActiveSection(ids);
+  if (!article || !path) return <Navigate to="/" replace />;
 
-  if (!displayArticle) return <PageSkeleton />;
+  const prof = getProfessor(article.professorId);
+  const moduleItem = path.find(p => p.type === 'module') || path[0];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      {/* Breadcrumbs */}
-      <nav className="mb-8 flex items-center gap-2 overflow-x-auto whitespace-nowrap text-xs text-muted-foreground">
-        <span className="flex items-center gap-1.5">
-          <BookOpen size={13} />
-          Fanlar
-        </span>
-        {breadcrumbPath?.map((step) => (
-          <div key={step.id} className="flex items-center gap-2">
-            <ChevronRight size={12} className="shrink-0" />
-            <span className={step.id === activeId ? "font-medium text-foreground" : ""}>
-              {step.title}
-            </span>
-          </div>
-        ))}
+      {/* Top Breadcrumbs */}
+      <nav className="mb-8 flex items-center justify-center gap-2 rounded-2xl bg-surface px-6 py-3 text-[10px] font-medium text-muted-foreground sm:text-xs">
+         <Link to="/" className="hover:text-primary">Fanlar</Link>
+         {path.map((p, i) => (
+           <div key={p.id} className="flex items-center gap-2">
+             <ChevronRight size={12} className="shrink-0" />
+             <Link 
+               to={p.type === 'article' ? `/article/${p.id}` : `/library/${p.id}`}
+               className={i === path.length - 1 ? "text-primary" : "hover:text-primary"}
+             >
+               {p.title}
+             </Link>
+           </div>
+         ))}
       </nav>
 
-      <div className="grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)_280px]">
-        {/* Sidebar Navigation */}
-        <aside className="hidden lg:block lg:sticky lg:top-20 lg:self-start border-r pr-6">
-          <p className="mb-4 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            O'quv dasturi
-          </p>
-          <NavTree items={medicalCurriculumData} activeId={activeId} />
-        </aside>
-
-        {/* Article Body */}
-        <article className="min-w-0">
-          <div className="mb-4 flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded-md bg-[#E0F2F1] px-2.5 py-1 text-xs font-semibold text-[#00796B]">
-              ICD-11 kodi: {navItem?.icd11 || displayArticle.icd11}
-            </span>
-            <span className="inline-flex items-center rounded-md border bg-card px-2.5 py-1 text-xs text-muted-foreground">
-               {(breadcrumbPath?.[0]?.title) || dept?.name}
-            </span>
-            <span className="text-xs text-muted-foreground">· {formatDate(displayArticle.publishedAt)} yangilandi</span>
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            {navItem?.title || displayArticle.title}
-          </h1>
-          <p className="mt-3 text-base text-muted-foreground">{displayArticle.excerpt}</p>
-
-          <div className="article-prose mt-8">
-            {displayArticle.sections.map((s) => (
-              <section key={s.id} id={s.id} className="scroll-mt-24">
-                <h2>{s.heading}</h2>
-                {s.paragraphs.map((p, i) => (
-                  <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
-                ))}
-              </section>
-            ))}
-          </div>
-        </article>
-
-        {/* Sidebar Extras (TOC + Downloads) */}
-        <aside className="space-y-6 lg:sticky lg:top-20 lg:self-start">
-             {/* TOC Component */}
-             <div className="rounded-xl border bg-card p-5">
-                <p className="mb-4 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    Maqola bo'limlari
-                </p>
-                <ul className="space-y-1.5 border-l">
-                    {displayArticle.sections.map((s) => (
-                    <li key={s.id}>
-                        <a
-                        href={`#${s.id}`}
-                        className={`block -ml-px border-l-2 py-1 pl-3 text-sm transition ${
-                            activeSection === s.id
-                            ? "border-[#00796B] font-medium text-[#00796B]"
-                            : "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                        }`}
-                        >
-                        {s.heading}
-                        </a>
-                    </li>
-                    ))}
-                </ul>
+      <div className="flex flex-col gap-8 lg:flex-row">
+        {/* Left Sidebar: Module Tree */}
+        <aside className="w-full shrink-0 space-y-6 lg:w-72">
+          <div className="rounded-[32px] border bg-card p-4">
+            <div className="mb-4 flex items-center gap-3 px-4 py-2">
+              <FileText size={20} className="text-primary" />
+              <h3 className="text-lg font-bold text-foreground">{moduleItem.title}</h3>
             </div>
-
-          {prof && (
-            <div className="rounded-xl border bg-card p-5">
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Ma'lumot beruvchi professor
-              </p>
-              <div className="flex items-center gap-3">
-                <img
-                  src={prof.avatar}
-                  alt={prof.fullName}
-                  className="h-12 w-12 rounded-full border object-cover"
-                />
-                <div className="min-w-0">
-                  <p className="truncate font-semibold text-foreground">{prof.title}</p>
-                  <p className="truncate text-xs text-muted-foreground">{prof.department}</p>
-                </div>
-              </div>
-              <Link
-                to={`/professor/${prof.id}`}
-                className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-[#00796B] hover:underline"
-              >
-                <UserRound size={13} /> Profilni ko'rish
+            <div className="max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+              {moduleItem.children?.map(child => (
+                <SidebarNode key={child.id} item={child} currentId={article.id} />
+              ))}
+            </div>
+            <div className="mt-4 border-t pt-4">
+              <Link to={`/library/${moduleItem.id}`} className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-muted-foreground hover:text-primary transition-colors">
+                <ArrowLeft size={14} />
+                Barcha modullarga qaytish
               </Link>
             </div>
-          )}
-
-          <div className="rounded-xl border bg-card p-5">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Kurs materiallari
-            </p>
-            <ul className="space-y-2">
-              {displayArticle.downloads.map((d) => {
-                const Icon = d.type === "PDF" ? FileText : Presentation;
-                return (
-                  <li key={d.filename}>
-                    <a
-                      href="#"
-                      download={d.filename}
-                      className="group flex items-center gap-3 rounded-lg border bg-background p-3 transition hover:border-[#00796B] hover:bg-[#E0F2F1]"
-                    >
-                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#E0F2F1] text-[#00796B] group-hover:bg-[#00796B] group-hover:text-white">
-                        <Icon size={16} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-foreground">{d.filename}</p>
-                        <p className="text-[11px] text-muted-foreground">{d.type} · {d.sizeMB.toFixed(1)} MB</p>
-                      </div>
-                      <Download size={15} className="shrink-0 text-muted-foreground transition group-hover:text-[#00796B]" />
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
           </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1 min-w-0">
+          <div className="rounded-[40px] border bg-card p-8 sm:p-16">
+            <h1 className="mb-6 text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+              {article.title}
+            </h1>
+            
+            <div className="mb-10 flex flex-wrap gap-3">
+              {article.badges?.map(b => (
+                <span key={b} className="rounded-full bg-primary-soft/50 border border-primary/20 px-4 py-1 text-[10px] font-bold tracking-wider text-primary">
+                  {b}
+                </span>
+              ))}
+              <span className="rounded-full bg-muted/50 border px-4 py-1 text-[10px] font-bold tracking-wider text-muted-foreground uppercase">
+                ICD-11: {article.icd11}
+              </span>
+            </div>
+
+            <div className="prose prose-slate prose-lg max-w-none prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-strong:text-foreground">
+              {article.sections.map(section => (
+                <div key={section.id} className="mb-12">
+                  <h2>{section.heading}</h2>
+                  {section.paragraphs.map((p, idx) => (
+                    <p key={idx} dangerouslySetInnerHTML={{ __html: p }} />
+                  ))}
+                  {section.image && (
+                    <figure className="my-10">
+                      <div className="overflow-hidden rounded-3xl bg-muted/30 p-4 ring-1 ring-border">
+                        <img src={section.image} alt={section.heading} className="w-full rounded-2xl shadow-lg" />
+                      </div>
+                      {section.imageCaption && (
+                        <figcaption className="mt-4 text-center text-xs font-medium text-muted-foreground italic">
+                          {section.imageCaption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </main>
+
+        {/* Right Sidebar: Downloads & Prof */}
+        <aside className="w-full shrink-0 space-y-8 lg:w-72">
+          {/* Downloads */}
+          <div className="rounded-[32px] border bg-card p-8 shadow-sm">
+            <div className="mb-6 flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">
+                <Download size={20} />
+              </span>
+              <h3 className="text-xl font-bold text-foreground">Materiallar</h3>
+            </div>
+            <div className="space-y-3">
+              {article.downloads.map((d, i) => (
+                <div key={i} className="flex items-center justify-between rounded-2xl border bg-surface p-3 transition hover:border-primary">
+                  <div className="flex items-center gap-3 truncate">
+                    <div className="shrink-0 rounded-lg bg-red-100 p-2 text-red-600">
+                      <FileText size={18} />
+                    </div>
+                    <div className="truncate">
+                      <div className="truncate text-[11px] font-bold text-foreground">{d.filename}</div>
+                      <div className="text-[10px] text-muted-foreground">{d.sizeMB} MB</div>
+                    </div>
+                  </div>
+                  <button className="shrink-0 rounded-full border bg-white p-1.5 text-muted-foreground transition hover:bg-primary hover:text-white">
+                    <Download size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Professor Card */}
+          {prof && (
+            <Link to={`/professor/${prof.id}`} className="block group">
+              <div className="relative rounded-[32px] border bg-card p-8 shadow-sm transition-all hover:shadow-xl hover:border-primary">
+                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border-4 border-white h-20 w-20 shadow-lg group-hover:scale-110 transition-transform">
+                   <img src={prof.avatar} alt={prof.fullName} className="h-full w-full object-cover" />
+                 </div>
+                 <div className="mt-8 text-center">
+                   <h3 className="text-xl font-extrabold text-foreground transition-colors group-hover:text-primary">
+                     {prof.title}
+                   </h3>
+                   <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest mt-1">
+                     {prof.department} kafedrasi
+                   </p>
+                   {prof.quote && (
+                     <div className="relative mt-8 rounded-3xl bg-surface p-6 text-sm text-muted-foreground leading-relaxed italic">
+                        <Quote className="absolute -top-3 left-6 text-primary/20 rotate-180" size={24} />
+                        "{prof.quote}"
+                     </div>
+                   )}
+                 </div>
+              </div>
+            </Link>
+          )}
         </aside>
       </div>
     </div>

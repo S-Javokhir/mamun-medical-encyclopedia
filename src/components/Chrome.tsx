@@ -12,21 +12,21 @@ export function Header() {
             <Stethoscope size={18} />
           </span>
           <span className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold tracking-tight">MedKnowledge</span>
-            <span className="text-[11px] text-muted-foreground">Raqamli kutubxona</span>
+            <span className="text-sm font-semibold tracking-tight">Mamun University</span>
+            <span className="text-[11px] text-muted-foreground uppercase tracking-wider">Encyclopedias</span>
           </span>
         </Link>
         <nav className="flex items-center gap-1 text-xs sm:text-sm">
           {[
             { to: "/", label: "Bosh sahifa" },
-            { to: "/departments", label: "Bo'limlar" },
+            { to: "/library/subj-1", label: "Kutubxona" },
             { to: "/glossary", label: "Lug'at" },
           ].map((l) => (
             <Link
               key={l.to}
               to={l.to}
               className={`rounded-md px-2 py-1.5 font-medium transition-colors hover:bg-muted hover:text-foreground sm:px-3 ${
-                location.pathname === l.to
+                location.pathname === l.to || (l.label === 'Kutubxona' && location.pathname.startsWith('/library'))
                   ? "bg-primary-soft text-primary"
                   : "text-muted-foreground"
               }`}
@@ -42,10 +42,26 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t bg-surface">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-8 text-xs text-muted-foreground sm:flex-row">
-        <p>© {new Date().getFullYear()} MedKnowledge — Universitet raqamli kutubxonasi</p>
-        <p>Ro'yxatdan o'tgan talabalar akademik foydalanishi uchun. Klinik ko'rsatmalar o'rnini bosmaydi.</p>
+    <footer className="mt-20 border-t bg-stone-50">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 py-12 text-xs text-muted-foreground lg:flex-row">
+        <div className="max-w-xs text-center lg:text-left">
+            <div className="font-bold text-foreground mb-1">Mamun University Encyclopedias</div>
+            <p className="leading-relaxed">Markaziy Osiyodagi eng yirik akademik elektron platforma. Tibbiy bilimlar va ensiklopediyalar markazi.</p>
+        </div>
+        <div className="flex gap-8">
+            <div className="space-y-2">
+              <div className="font-bold text-foreground uppercase tracking-wider">Resurslar</div>
+              <div>Institut Repozitoriysi</div>
+              <div>Maxfiylik siyosati</div>
+              <div>Tibbiy ogohlantirish</div>
+            </div>
+            <div className="space-y-2">
+              <div className="font-bold text-foreground uppercase tracking-wider">Fakultet</div>
+              <div>Bog'lanish</div>
+              <div>Kutubxona qoidalari</div>
+            </div>
+        </div>
+        <p>© {new Date().getFullYear()} Mamun University Encyclopedias. Barcha huquqlar himoyalangan.</p>
       </div>
     </footer>
   );
