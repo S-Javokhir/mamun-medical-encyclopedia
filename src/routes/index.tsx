@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import { BookOpen, Users, Clock, ArrowRight } from "lucide-react";
-import { medicalCurriculumData, getLatestArticles, formatDate } from "../data/library";
+import { useLibrary } from "../hooks/useLibrary";
 import { DeptIcon } from "../components/DeptIcon";
 import { SearchBar } from "../components/SearchBar";
+import { formatDate } from "../data/library";
 
 export default function Dashboard() {
+  const { getLatestArticles, categories } = useLibrary();
   const latestArticles = getLatestArticles(3);
-  const subjects = medicalCurriculumData;
+  const subjects = categories;
 
   return (
     <div className="flex flex-col">
@@ -26,10 +28,10 @@ export default function Dashboard() {
               Mamun <span className="text-primary">University</span>
             </h1>
             <p className="mt-8 text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Tibbiyot talabalari va professorlari uchun mo'ljallangan yagona raqamli bilimlar bazasi. 
-              Morfologik va klinik fanlar bo'yicha eng ishonchli materiallar.
+              Tibbiyot talabalari va professorlari uchun mo'ljallangan yagona raqamli bilimlar
+              bazasi. Morfologik va klinik fanlar bo'yicha eng ishonchli materiallar.
             </p>
-            
+
             <SearchBar />
 
             <div className="mt-12 flex flex-wrap justify-center gap-4">
@@ -56,10 +58,15 @@ export default function Dashboard() {
         <section className="mb-24">
           <div className="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Faylasuflar (Subjects)</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                Faylasuflar (Subjects)
+              </h2>
               <p className="mt-2 text-muted-foreground">O'quv dasturi bo'yicha asosiy fanlar</p>
             </div>
-            <Link to="/library/subj-1" className="flex items-center gap-2 font-bold text-primary hover:underline">
+            <Link
+              to="/library/subj-1"
+              className="flex items-center gap-2 font-bold text-primary hover:underline"
+            >
               Barchasini ko'rish <ArrowRight size={18} />
             </Link>
           </div>
@@ -98,8 +105,12 @@ export default function Dashboard() {
         {/* Latest Articles */}
         <section>
           <div className="mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">So'nggi maqolalar</h2>
-            <p className="mt-2 text-muted-foreground">Kutubxonaga yangi qo'shilgan ilmiy materiallar</p>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              So'nggi maqolalar
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Kutubxonaga yangi qo'shilgan ilmiy materiallar
+            </p>
           </div>
 
           <div className="grid gap-8">
@@ -110,7 +121,10 @@ export default function Dashboard() {
                 className="group flex flex-col gap-6 rounded-[32px] border bg-card p-6 transition-all hover:border-primary hover:shadow-lg sm:flex-row sm:items-center sm:p-8"
               >
                 <div className="shrink-0 rounded-2xl bg-muted p-6">
-                  <BookOpen size={32} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                  <BookOpen
+                    size={32}
+                    className="text-muted-foreground group-hover:text-primary transition-colors"
+                  />
                 </div>
                 <div className="flex-1">
                   <div className="mb-2 flex flex-wrap items-center gap-3">
@@ -124,9 +138,7 @@ export default function Dashboard() {
                   <h3 className="text-2xl font-bold text-foreground transition-colors group-hover:text-primary">
                     {a.title}
                   </h3>
-                  <p className="mt-3 text-base text-muted-foreground line-clamp-2">
-                    {a.excerpt}
-                  </p>
+                  <p className="mt-3 text-base text-muted-foreground line-clamp-2">{a.excerpt}</p>
                 </div>
                 <div className="hidden sm:block">
                   <span className="grid h-12 w-12 place-items-center rounded-full bg-muted text-muted-foreground transition-all group-hover:bg-primary group-hover:text-white">

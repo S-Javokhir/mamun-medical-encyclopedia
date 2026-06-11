@@ -46,7 +46,10 @@ function NavNode({ item, activeId, level }: { item: NavItem; activeId?: string; 
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
           }`}
         >
-          <FileText size={14} className={isActive ? "text-[#00796B]" : "text-muted-foreground/70"} />
+          <FileText
+            size={14}
+            className={isActive ? "text-[#00796B]" : "text-muted-foreground/70"}
+          />
           <span className="truncate">{item.title}</span>
         </Link>
       </li>

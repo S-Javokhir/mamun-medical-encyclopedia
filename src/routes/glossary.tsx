@@ -6,14 +6,17 @@ export default function Glossary() {
   const [activeLetter, setActiveLetter] = useState("A");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const alphabet = "ABDEFGHIJKLMNOPRSTUVXG'SHCH".split("");
+  const alphabet = [
+    "A", "B", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", 
+    "N", "O", "P", "R", "S", "T", "U", "V", "X", "G'", "O'", "SH", "CH"
+  ];
 
   const filteredTerms = useMemo(() => {
     if (searchTerm) {
       return glossaryTerms.filter(
         (t) =>
           t.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          t.definition.toLowerCase().includes(searchTerm.toLowerCase())
+          t.definition.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
     return getGlossaryByLetter(activeLetter);
@@ -29,8 +32,8 @@ export default function Glossary() {
           Tibbiy terminlar lug'ati
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-          Asosiy tibbiy atamalar, tushunchalar va ularning qisqacha izohlari to'plami. 
-          Alifbo bo'yicha yoki qidiruv orqali kerakli s'ozni toping.
+          Asosiy tibbiy atamalar, tushunchalar va ularning qisqacha izohlari to'plami. Alifbo
+          bo'yicha yoki qidiruv orqali kerakli s'ozni toping.
         </p>
       </div>
 
@@ -83,9 +86,7 @@ export default function Glossary() {
                   {t.category}
                 </span>
               </div>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {t.definition}
-              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{t.definition}</p>
             </div>
           ))
         ) : (

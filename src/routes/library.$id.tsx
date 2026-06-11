@@ -16,12 +16,14 @@ export default function LibraryCategory() {
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
       {/* Breadcrumbs */}
       <nav className="mb-8 flex items-center gap-2 overflow-x-auto whitespace-nowrap text-[11px] font-medium text-muted-foreground sm:text-xs">
-        <Link to="/" className="hover:text-primary">Bosh sahifa</Link>
+        <Link to="/" className="hover:text-primary">
+          Bosh sahifa
+        </Link>
         {path.map((p, i) => (
           <div key={p.id} className="flex items-center gap-2">
             <ChevronRight size={14} className="shrink-0" />
-            <Link 
-              to={p.type === 'article' ? `/article/${p.id}` : `/library/${p.id}`}
+            <Link
+              to={p.type === "article" ? `/article/${p.id}` : `/library/${p.id}`}
               className={i === path.length - 1 ? "text-primary" : "hover:text-primary"}
             >
               {p.title}
@@ -45,7 +47,7 @@ export default function LibraryCategory() {
         <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
           {item.description}
         </p>
-        
+
         {/* Stats */}
         <div className="mt-8 flex gap-4">
           <div className="flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-xs font-semibold text-muted-foreground shadow-sm">
@@ -64,7 +66,7 @@ export default function LibraryCategory() {
         {children.map((child) => (
           <Link
             key={child.id}
-            to={child.type === 'article' ? `/article/${child.id}` : `/library/${child.id}`}
+            to={child.type === "article" ? `/article/${child.id}` : `/library/${child.id}`}
             className="group flex flex-col rounded-[32px] border bg-card p-8 shadow-sm transition-all hover:-translate-y-1 hover:border-primary hover:shadow-xl"
           >
             <div className="mb-8 flex items-start justify-between">
@@ -72,8 +74,11 @@ export default function LibraryCategory() {
                 <DeptIcon name={child.icon || "Bone"} className="h-8 w-8" />
               </span>
               <div className="relative h-20 w-20 overflow-hidden opacity-10 grayscale group-hover:opacity-20 group-hover:grayscale-0">
-                 {/* Decorative background icon */}
-                 <DeptIcon name={child.icon || "Bone"} className="absolute -right-4 -top-4 h-24 w-24" />
+                {/* Decorative background icon */}
+                <DeptIcon
+                  name={child.icon || "Bone"}
+                  className="absolute -right-4 -top-4 h-24 w-24"
+                />
               </div>
             </div>
 
@@ -85,13 +90,13 @@ export default function LibraryCategory() {
                 ({child.englishTitle})
               </p>
             )}
-            
+
             <p className="mb-8 line-clamp-3 text-sm leading-relaxed text-muted-foreground/80">
               {child.description || "Ushbu bo'lim haqida batafsil ma'lumot yaqin orada qo'shiladi."}
             </p>
 
             <div className="mt-auto space-y-1">
-              {child.type === 'article' ? (
+              {child.type === "article" ? (
                 <div className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs font-bold text-primary">
                   Maqolani o'qish →
                 </div>
@@ -99,7 +104,9 @@ export default function LibraryCategory() {
                 <>
                   <div className="text-sm font-bold text-foreground">
                     {child.topicCount && <span>{child.topicCount} Mavzu</span>}
-                    {!child.topicCount && child.children && <span>{child.children.length} Mavzu</span>}
+                    {!child.topicCount && child.children && (
+                      <span>{child.children.length} Mavzu</span>
+                    )}
                   </div>
                   <div className="text-xs font-medium text-muted-foreground">
                     {child.articleCount || 0} Akademik maqola
@@ -125,7 +132,8 @@ export default function LibraryCategory() {
               Explore the {item.englishTitle || item.title} Atlas
             </h2>
             <p className="text-lg text-muted-foreground">
-              Access our high-resolution 3D anatomical models and the full peer-reviewed medical repository curated by the faculty.
+              Access our high-resolution 3D anatomical models and the full peer-reviewed medical
+              repository curated by the faculty.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
               <button className="rounded-full bg-primary px-8 py-3 font-bold text-white shadow-lg transition hover:bg-primary/90">
@@ -137,22 +145,22 @@ export default function LibraryCategory() {
             </div>
           </div>
           <div className="relative flex-1">
-             <img 
-               src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=800" 
-               alt="Atlas" 
-               className="rounded-3xl shadow-2xl"
-             />
-             <div className="absolute -bottom-6 -left-6 rounded-3xl bg-white p-6 shadow-xl hidden sm:block">
-               <div className="flex items-center gap-4">
-                 <div className="h-12 w-12 rounded-full bg-primary-soft text-primary grid place-items-center">
-                   <BookOpen size={24} />
-                 </div>
-                 <div>
-                   <div className="text-xl font-bold text-foreground">3D Models</div>
-                   <div className="text-xs text-muted-foreground">Interactive exploration</div>
-                 </div>
-               </div>
-             </div>
+            <img
+              src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=800"
+              alt="Atlas"
+              className="rounded-3xl shadow-2xl"
+            />
+            <div className="absolute -bottom-6 -left-6 rounded-3xl bg-white p-6 shadow-xl hidden sm:block">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-primary-soft text-primary grid place-items-center">
+                  <BookOpen size={24} />
+                </div>
+                <div>
+                  <div className="text-xl font-bold text-foreground">3D Models</div>
+                  <div className="text-xs text-muted-foreground">Interactive exploration</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

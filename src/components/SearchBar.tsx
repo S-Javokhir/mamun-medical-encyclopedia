@@ -19,7 +19,8 @@ export function SearchBar() {
         </div>
       </div>
       <p className="mt-4 text-center text-sm text-muted-foreground/60 italic">
-        Misol uchun: <span className="font-medium text-primary/80">"Osteologiya"</span>, <span className="font-medium text-primary/80">"Yurak anatomiyasi"</span>
+        Misol uchun: <span className="font-medium text-primary/80">"Osteologiya"</span>,{" "}
+        <span className="font-medium text-primary/80">"Yurak anatomiyasi"</span>
       </p>
     </div>
   );

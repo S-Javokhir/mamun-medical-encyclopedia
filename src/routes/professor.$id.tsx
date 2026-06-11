@@ -1,11 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowRight, GraduationCap } from "lucide-react";
-import {
-  formatDate,
-  getDepartment,
-  getProfessor,
-  getProfessorArticles,
-} from "../data/library";
+import { formatDate, getDepartment, getProfessor, getProfessorArticles } from "../data/library";
 import { PageSkeleton } from "../components/Skeleton";
 
 export default function ProfessorProfile() {
@@ -18,7 +13,9 @@ export default function ProfessorProfile() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <nav className="mb-6 text-xs text-muted-foreground">
-        <Link to="/" className="hover:text-primary">Bosh sahifa</Link>
+        <Link to="/" className="hover:text-primary">
+          Bosh sahifa
+        </Link>
         <span className="mx-1.5">/</span>
         <span>Professorlar</span>
         <span className="mx-1.5">/</span>
@@ -81,7 +78,9 @@ export default function ProfessorProfile() {
       {/* Contributions */}
       <section className="mt-10">
         <div className="mb-5 flex items-end justify-between">
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Maqolalar / Hissalar</h2>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">
+            Maqolalar / Hissalar
+          </h2>
           <p className="text-xs text-muted-foreground">{items.length} ta material</p>
         </div>
         <ul className="divide-y rounded-xl border bg-card">
@@ -101,7 +100,9 @@ export default function ProfessorProfile() {
                       <span className="rounded border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground">
                         {dept?.name}
                       </span>
-                      <span className="text-[11px] text-muted-foreground">{formatDate(a.publishedAt)}</span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {formatDate(a.publishedAt)}
+                      </span>
                     </div>
                     <p className="mt-1.5 font-semibold text-foreground">{a.title}</p>
                     <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{a.excerpt}</p>

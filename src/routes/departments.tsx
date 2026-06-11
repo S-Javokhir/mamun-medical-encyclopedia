@@ -10,9 +10,7 @@ export default function Departments() {
     const term = q.trim().toLowerCase();
     if (!term) return departments;
     return departments.filter(
-      (d) =>
-        d.name.toLowerCase().includes(term) ||
-        d.blurb.toLowerCase().includes(term)
+      (d) => d.name.toLowerCase().includes(term) || d.blurb.toLowerCase().includes(term),
     );
   }, [q]);
 
@@ -23,8 +21,8 @@ export default function Departments() {
           Klinik bo'limlar
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-          MedKnowledge kutubxonasidagi barcha klinik sohalar. 
-          Har bir bo'limda professorlar tomonidan tayyorlangan maxsus o'quv materiallari mavjud.
+          MedKnowledge kutubxonasidagi barcha klinik sohalar. Har bir bo'limda professorlar
+          tomonidan tayyorlangan maxsus o'quv materiallari mavjud.
         </p>
       </div>
 
@@ -57,13 +55,11 @@ export default function Departments() {
                 {d.articleCount + d.pdfCount} material
               </span>
             </div>
-            
+
             <h3 className="mb-2 text-xl font-bold text-foreground transition-colors group-hover:text-primary">
               {d.name}
             </h3>
-            <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-              {d.blurb}
-            </p>
+            <p className="mb-6 text-sm leading-relaxed text-muted-foreground">{d.blurb}</p>
 
             <div className="mt-auto flex flex-wrap gap-2 text-[12px]">
               <span className="flex items-center gap-1.5 rounded-full bg-background px-3 py-1.5 font-medium text-foreground border">
