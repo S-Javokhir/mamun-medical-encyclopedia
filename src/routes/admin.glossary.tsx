@@ -240,13 +240,14 @@ export default function AdminGlossary() {
           <AlertDialogHeader>
             <AlertDialogTitle>Terminni o'chirish</AlertDialogTitle>
             <AlertDialogDescription>
-              Haqiqatan ham "{termToDelete}" terminini o'chirmoqchimisiz? Bu amalni ortga qaytarib bo'lmaydi.
+              Haqiqatan ham "{termToDelete}" terminini o'chirmoqchimisiz? Bu amalni ortga qaytarib
+              bo'lmaydi.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={confirmDelete} 
+            <AlertDialogAction
+              onClick={confirmDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               O'chirish

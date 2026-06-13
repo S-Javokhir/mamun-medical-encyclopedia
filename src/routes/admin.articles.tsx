@@ -48,9 +48,9 @@ export default function AdminArticles() {
     const matchesSearch =
       article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       article.id.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesDepartment = !selectedDepartment || article.departmentSlug === selectedDepartment;
-    
+
     return matchesSearch && matchesDepartment;
   });
 
@@ -69,15 +69,19 @@ export default function AdminArticles() {
         <div className="flex gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className={`gap-2 ${selectedDepartment ? "border-primary text-primary" : ""}`}>
+              <Button
+                variant="outline"
+                size="sm"
+                className={`gap-2 ${selectedDepartment ? "border-primary text-primary" : ""}`}
+              >
                 <Filter size={16} />
-                {selectedDepartment 
-                  ? departments.find(d => d.slug === selectedDepartment)?.name 
+                {selectedDepartment
+                  ? departments.find((d) => d.slug === selectedDepartment)?.name
                   : "Filtr"}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={() => setSelectedDepartment(null)}
                 className="flex items-center justify-between"
               >
@@ -85,7 +89,7 @@ export default function AdminArticles() {
                 {!selectedDepartment && <Check size={14} className="text-primary" />}
               </DropdownMenuItem>
               {departments.map((dept) => (
-                <DropdownMenuItem 
+                <DropdownMenuItem
                   key={dept.slug}
                   onClick={() => setSelectedDepartment(dept.slug)}
                   className="flex items-center justify-between"
@@ -137,8 +141,8 @@ export default function AdminArticles() {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-sm">
-                  {article.publishedAt.includes("T") 
-                    ? article.publishedAt.split("T")[0] 
+                  {article.publishedAt.includes("T")
+                    ? article.publishedAt.split("T")[0]
                     : article.publishedAt}
                 </TableCell>
                 <TableCell>
@@ -176,7 +180,10 @@ export default function AdminArticles() {
         </Table>
       </div>
 
-      <AlertDialog open={!!articleToDelete} onOpenChange={(open) => !open && setArticleToDelete(null)}>
+      <AlertDialog
+        open={!!articleToDelete}
+        onOpenChange={(open) => !open && setArticleToDelete(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Maqolani o'chirish</AlertDialogTitle>
@@ -186,7 +193,10 @@ export default function AdminArticles() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               O'chirish
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -77,44 +77,41 @@ export function useLibrary() {
   });
 
   // Build a fully-updated data snapshot (recalculate counts)
-  const buildUpdatedData = useCallback(
-    (prev: LibraryData, articles: Article[]): LibraryData => {
-      const updatedDepartments = prev.departments.map((dept) => {
-        const deptArticles = articles.filter((a) => a.departmentSlug === dept.slug);
-        return {
-          ...dept,
-          articleCount: deptArticles.length,
-          pdfCount: deptArticles.reduce(
-            (acc, a) => acc + (a.downloads?.filter((d) => d.type === "PDF").length || 0),
-            0,
-          ),
-        };
-      });
-
-      const countArticlesUnderNode = (node: NavItem): number => {
-        let count = 0;
-        if (node.type === "article" && articles.some((a) => a.id === node.id)) count = 1;
-        if (node.children)
-          count += node.children.reduce((acc, c) => acc + countArticlesUnderNode(c), 0);
-        return count;
-      };
-
-      const updateNavItemCounts = (items: NavItem[]): NavItem[] =>
-        items.map((item) => ({
-          ...item,
-          ...(item.type !== "article" ? { articleCount: countArticlesUnderNode(item) } : {}),
-          ...(item.children ? { children: updateNavItemCounts(item.children) } : {}),
-        }));
-
+  const buildUpdatedData = useCallback((prev: LibraryData, articles: Article[]): LibraryData => {
+    const updatedDepartments = prev.departments.map((dept) => {
+      const deptArticles = articles.filter((a) => a.departmentSlug === dept.slug);
       return {
-        ...prev,
-        departments: updatedDepartments,
-        categories: updateNavItemCounts(prev.categories),
-        articles,
+        ...dept,
+        articleCount: deptArticles.length,
+        pdfCount: deptArticles.reduce(
+          (acc, a) => acc + (a.downloads?.filter((d) => d.type === "PDF").length || 0),
+          0,
+        ),
       };
-    },
-    [],
-  );
+    });
+
+    const countArticlesUnderNode = (node: NavItem): number => {
+      let count = 0;
+      if (node.type === "article" && articles.some((a) => a.id === node.id)) count = 1;
+      if (node.children)
+        count += node.children.reduce((acc, c) => acc + countArticlesUnderNode(c), 0);
+      return count;
+    };
+
+    const updateNavItemCounts = (items: NavItem[]): NavItem[] =>
+      items.map((item) => ({
+        ...item,
+        ...(item.type !== "article" ? { articleCount: countArticlesUnderNode(item) } : {}),
+        ...(item.children ? { children: updateNavItemCounts(item.children) } : {}),
+      }));
+
+    return {
+      ...prev,
+      departments: updatedDepartments,
+      categories: updateNavItemCounts(prev.categories),
+      articles,
+    };
+  }, []);
 
   // Initial count sync on mount
   useEffect(() => {
@@ -151,7 +148,7 @@ export function useLibrary() {
       return newData;
     });
     toast.success("Muvaffaqiyatli o'chirildi", {
-      description: "Maqola ro'yxatdan olib tashlandi."
+      description: "Maqola ro'yxatdan olib tashlandi.",
     });
   };
 
@@ -164,7 +161,7 @@ export function useLibrary() {
       return newData;
     });
     toast.success("Muvaffaqiyatli qo'shildi", {
-      description: "Yangi termin lug'atga kiritildi."
+      description: "Yangi termin lug'atga kiritildi.",
     });
   };
 
@@ -178,7 +175,7 @@ export function useLibrary() {
       return newData;
     });
     toast.success("Muvaffaqiyatli yangilandi", {
-      description: "Termin ma'lumoti muvaffaqiyatli o'zgartirildi."
+      description: "Termin ma'lumoti muvaffaqiyatli o'zgartirildi.",
     });
   };
 
@@ -192,7 +189,7 @@ export function useLibrary() {
       return newData;
     });
     toast.success("Muvaffaqiyatli o'chirildi", {
-      description: "Termin lug'atdan olib tashlandi."
+      description: "Termin lug'atdan olib tashlandi.",
     });
   };
 
@@ -214,7 +211,7 @@ export function useLibrary() {
       return newData;
     });
     toast.success("Muvaffaqiyatli yangilandi", {
-      description: "Bo'limlar ma'lumoti muvaffaqiyatli yangilandi."
+      description: "Bo'limlar ma'lumoti muvaffaqiyatli yangilandi.",
     });
   };
 

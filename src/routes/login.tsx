@@ -31,9 +31,7 @@ export default function LoginPage() {
             <Lock size={24} />
           </div>
           <h2 className="mt-4 text-2xl font-bold tracking-tight">Admin panelga kirish</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Davom etish uchun parolni kiriting
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">Davom etish uchun parolni kiriting</p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
@@ -77,9 +75,9 @@ export default function LoginPage() {
             <LogIn size={18} />
             Kirish
           </Button>
-          
+
           <Button variant="ghost" className="w-full" onClick={() => navigate("/")}>
-             Bosh sahifaga qaytish
+            Bosh sahifaga qaytish
           </Button>
         </form>
       </div>

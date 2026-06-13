@@ -49,7 +49,7 @@ export default function ProfessorProfile() {
                 Ilmiy qiziqishlar
               </p>
               <div className="flex flex-wrap gap-2">
-                {prof.researchInterests.map((r) => (
+                {prof.researchInterests.map((r: string) => (
                   <span
                     key={r}
                     className="rounded-full border bg-background px-2.5 py-1 text-xs text-foreground/80"
@@ -65,7 +65,7 @@ export default function ProfessorProfile() {
                 Malaka va yutuqlar
               </p>
               <ul className="space-y-1 text-sm text-foreground/90">
-                {prof.credentials.map((c) => (
+                {prof.credentials.map((c: string) => (
                   <li key={c} className="flex gap-2">
                     <span className="mt-2 inline-block h-1 w-1 shrink-0 rounded-full bg-primary" />
                     {c}

@@ -8,8 +8,31 @@ export default function Glossary() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const alphabet = [
-    "A", "B", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", 
-    "N", "O", "P", "R", "S", "T", "U", "V", "X", "G'", "O'", "SH", "CH"
+    "A",
+    "B",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "X",
+    "G'",
+    "O'",
+    "SH",
+    "CH",
   ];
 
   const filteredTerms = useMemo(() => {

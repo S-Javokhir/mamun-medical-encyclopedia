@@ -65,15 +65,16 @@ export default function AdminArticleEdit() {
 
   const handleSave = () => {
     if (!title || !departmentSlug) {
-      toast.error("Ma'lumotlar to'liq emas", { 
-        description: "Iltimos, sarlavha va bo'lim maydonlarini to'ldiring." 
+      toast.error("Ma'lumotlar to'liq emas", {
+        description: "Iltimos, sarlavha va bo'lim maydonlarini to'ldiring.",
       });
       return;
     }
-    
+
     // We get the existing article to preserve fields like publishedAt that are not edited in the form
     const existingArticle = getArticle(id!);
-    const originalPublishedAt = existingArticle?.publishedAt || new Date().toISOString().split("T")[0];
+    const originalPublishedAt =
+      existingArticle?.publishedAt || new Date().toISOString().split("T")[0];
 
     const updatedArticle: Article = {
       id: id!,
@@ -89,13 +90,13 @@ export default function AdminArticleEdit() {
 
     try {
       updateArticle(updatedArticle);
-      toast.success("Muvaffaqiyatli saqlandi", { 
-        description: "Maqola ma'lumotlari yangilandi." 
+      toast.success("Muvaffaqiyatli saqlandi", {
+        description: "Maqola ma'lumotlari yangilandi.",
       });
       navigate("/admin/articles");
     } catch {
-      toast.error("Xatolik", { 
-        description: "Ma'lumotlarni saqlashda xatolik yuz berdi." 
+      toast.error("Xatolik", {
+        description: "Ma'lumotlarni saqlashda xatolik yuz berdi.",
       });
     }
   };

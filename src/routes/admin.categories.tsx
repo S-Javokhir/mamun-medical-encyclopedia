@@ -115,9 +115,9 @@ export default function AdminCategories() {
         },
       ]);
     }
-    
+
     toast.success("Muvaffaqiyatli qo'shildi", {
-      description: "Yangi kategoriya ierarxiyaga qo'shildi."
+      description: "Yangi kategoriya ierarxiyaga qo'shildi.",
     });
 
     setIsAddOpen(false);
@@ -149,11 +149,11 @@ export default function AdminCategories() {
       const slug = targetItem.title.toLowerCase().replace(/\s+/g, "-");
       updateDepartments(departments.filter((d) => d.slug !== slug));
     }
-    
+
     toast.success("Muvaffaqiyatli o'chirildi", {
-      description: "Kategoriya va uning tarkibi olib tashlandi."
+      description: "Kategoriya va uning tarkibi olib tashlandi.",
     });
-    
+
     setIdToDelete(null);
   };
 
@@ -310,13 +310,14 @@ export default function AdminCategories() {
           <AlertDialogHeader>
             <AlertDialogTitle>Kategoriyani o'chirish</AlertDialogTitle>
             <AlertDialogDescription>
-              Haqiqatan ham ushbu kategoriyani o'chirmoqchimisiz? Bu kategoriya ostidagi barcha quyi bo'limlar ham o'chib ketishi mumkin.
+              Haqiqatan ham ushbu kategoriyani o'chirmoqchimisiz? Bu kategoriya ostidagi barcha quyi
+              bo'limlar ham o'chib ketishi mumkin.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={confirmDelete} 
+            <AlertDialogAction
+              onClick={confirmDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               O'chirish

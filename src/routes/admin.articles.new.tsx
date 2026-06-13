@@ -46,8 +46,8 @@ export default function AdminArticleNew() {
 
   const handleSave = () => {
     if (!title || !departmentSlug || !professorId) {
-      toast.error("Ma'lumotlar to'liq emas", { 
-        description: "Iltimos, sarlavha, bo'lim va muallif maydonlarini to'ldiring." 
+      toast.error("Ma'lumotlar to'liq emas", {
+        description: "Iltimos, sarlavha, bo'lim va muallif maydonlarini to'ldiring.",
       });
       return;
     }
@@ -67,13 +67,13 @@ export default function AdminArticleNew() {
 
     try {
       addArticle(newArticle);
-      toast.success("Muvaffaqiyatli qo'shildi", { 
-        description: "Yangi maqola ro'yxatga kiritildi." 
+      toast.success("Muvaffaqiyatli qo'shildi", {
+        description: "Yangi maqola ro'yxatga kiritildi.",
       });
       navigate("/admin/articles");
     } catch {
-      toast.error("Xatolik", { 
-        description: "Yangi maqolani qo'shishda xatolik yuz berdi." 
+      toast.error("Xatolik", {
+        description: "Yangi maqolani qo'shishda xatolik yuz berdi.",
       });
     }
   };
