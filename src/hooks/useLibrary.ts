@@ -127,7 +127,7 @@ export function useLibrary() {
       saveToStorage(newData);
       return newData;
     });
-    toast.success("Maqola muvaffaqiyatli qo'shildi");
+    // Toast is handled in UI component to avoid duplicates
   };
 
   const updateArticle = (article: Article) => {
@@ -137,7 +137,7 @@ export function useLibrary() {
       saveToStorage(newData);
       return newData;
     });
-    toast.success("Maqola muvaffaqiyatli yangilandi");
+    // Toast is handled in UI component to avoid duplicates
   };
 
   const deleteArticle = (id: string) => {
@@ -147,7 +147,9 @@ export function useLibrary() {
       saveToStorage(newData);
       return newData;
     });
-    toast.success("Maqola o'chirildi");
+    toast.success("Muvaffaqiyatli o'chirildi", {
+      description: "Maqola ro'yxatdan olib tashlandi."
+    });
   };
 
   // ─── Glossary CRUD ────────────────────────────────────────────────────────
@@ -158,7 +160,9 @@ export function useLibrary() {
       saveToStorage(newData);
       return newData;
     });
-    toast.success("Yangi termin qo'shildi");
+    toast.success("Muvaffaqiyatli qo'shildi", {
+      description: "Yangi termin lug'atga kiritildi."
+    });
   };
 
   const updateGlossaryTerm = (oldTerm: string, updatedTerm: GlossaryTerm) => {
@@ -170,7 +174,9 @@ export function useLibrary() {
       saveToStorage(newData);
       return newData;
     });
-    toast.success("Termin yangilandi");
+    toast.success("Muvaffaqiyatli yangilandi", {
+      description: "Termin ma'lumoti muvaffaqiyatli o'zgartirildi."
+    });
   };
 
   const deleteGlossaryTerm = (termName: string) => {
@@ -182,7 +188,9 @@ export function useLibrary() {
       saveToStorage(newData);
       return newData;
     });
-    toast.success("Termin o'chirildi");
+    toast.success("Muvaffaqiyatli o'chirildi", {
+      description: "Termin lug'atdan olib tashlandi."
+    });
   };
 
   // ─── Categories & Departments ─────────────────────────────────────────────
@@ -193,7 +201,7 @@ export function useLibrary() {
       saveToStorage(newData);
       return newData;
     });
-    toast.success("Kategoriyalar saqlandi");
+    // Toast is handled in UI component to avoid duplicates
   };
 
   const updateDepartments = (departments: Department[]) => {
@@ -202,20 +210,28 @@ export function useLibrary() {
       saveToStorage(newData);
       return newData;
     });
-    toast.success("Bo'limlar yangilandi");
+    toast.success("Muvaffaqiyatli yangilandi", {
+      description: "Bo'limlar ma'lumoti muvaffaqiyatli yangilandi."
+    });
   };
 
   // ─── Selectors ────────────────────────────────────────────────────────────
 
-  const getArticle = (id: string) => {
-    return data.articles.find((a) => a.id === id);
-  };
+  const getArticle = useCallback(
+    (id: string) => {
+      return data.articles.find((a) => a.id === id);
+    },
+    [data.articles],
+  );
 
-  const getLatestArticles = (count: number) => {
-    return [...data.articles]
-      .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-      .slice(0, count);
-  };
+  const getLatestArticles = useCallback(
+    (count: number) => {
+      return [...data.articles]
+        .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+        .slice(0, count);
+    },
+    [data.articles],
+  );
 
   return {
     articles: data.articles,

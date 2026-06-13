@@ -1,11 +1,11 @@
 import { Outlet, Link } from "react-router-dom";
-import { Toaster } from "sonner";
+import { Toaster } from "../components/ui/sonner";
 import { Footer, Header } from "../components/Chrome";
 
 export default function RootLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <Toaster richColors position="top-right" />
+      <Toaster position="top-center" />
       <Header />
       <main className="flex-1">
         <Outlet />

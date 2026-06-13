@@ -42,8 +42,13 @@ export default function AdminArticleEdit() {
   const [departmentSlug, setDepartmentSlug] = useState("");
   const [professorId, setProfessorId] = useState("");
 
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+
   useEffect(() => {
-    const article = getArticle(id!);
+    // Only load if the ID has changed and hasn't been loaded yet
+    if (loadedId === id || !id) return;
+
+    const article = getArticle(id);
     if (article) {
       setTitle(article.title);
       setIcd11(article.icd11);
@@ -52,16 +57,23 @@ export default function AdminArticleEdit() {
       setProfessorId(article.professorId);
       setSections(article.sections);
       setDownloads(article.downloads);
+      setLoadedId(id);
     } else {
       navigate("/admin/articles");
     }
-  }, [id, getArticle, navigate]);
+  }, [id, getArticle, navigate, loadedId]);
 
   const handleSave = () => {
     if (!title || !departmentSlug) {
-      toast.error("❌ Iltimos, sarlavha va bo'lim maydonlarini to'ldiring.");
+      toast.error("Ma'lumotlar to'liq emas", { 
+        description: "Iltimos, sarlavha va bo'lim maydonlarini to'ldiring." 
+      });
       return;
     }
+    
+    // We get the existing article to preserve fields like publishedAt that are not edited in the form
+    const existingArticle = getArticle(id!);
+    const originalPublishedAt = existingArticle?.publishedAt || new Date().toISOString().split("T")[0];
 
     const updatedArticle: Article = {
       id: id!,
@@ -70,18 +82,38 @@ export default function AdminArticleEdit() {
       excerpt,
       departmentSlug,
       professorId,
-      publishedAt: new Date().toISOString(),
+      publishedAt: originalPublishedAt,
       sections,
       downloads,
     };
 
     try {
       updateArticle(updatedArticle);
-      toast.success("✅ Maqola muvaffaqiyatli saqlandi!");
+      toast.success("Muvaffaqiyatli saqlandi", { 
+        description: "Maqola ma'lumotlari yangilandi." 
+      });
       navigate("/admin/articles");
     } catch {
-      toast.error("❌ Xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.");
+      toast.error("Xatolik", { 
+        description: "Ma'lumotlarni saqlashda xatolik yuz berdi." 
+      });
     }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newDownloads: Download[] = Array.from(files).map((file) => ({
+        filename: file.name,
+        type: file.name.toUpperCase().endsWith(".PDF") ? "PDF" : "PPTX",
+        sizeMB: parseFloat((file.size / (1024 * 1024)).toFixed(2)),
+      }));
+      setDownloads([...downloads, ...newDownloads]);
+    }
+  };
+
+  const removeDownload = (index: number) => {
+    setDownloads(downloads.filter((_, i) => i !== index));
   };
 
   const addSection = () => {
@@ -98,7 +130,7 @@ export default function AdminArticleEdit() {
   };
 
   const updateSection = (id: string, field: keyof ArticleSection, value: any) => {
-    setSections(sections.map((s) => (s.id === id ? { ...s, [field]: value } : s)));
+    setSections((prev) => prev.map((s) => (s.id === id ? { ...s, [field]: value } : s)));
   };
 
   return (
@@ -246,10 +278,19 @@ export default function AdminArticleEdit() {
               <CardTitle>Yuklash uchun fayllar</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 p-10 text-center">
-                <UploadCloud className="mb-4 h-10 w-10 text-muted-foreground/50" />
-                <p className="text-sm font-medium">Fayllarni tanlang yoki tashlang</p>
-                <p className="text-xs text-muted-foreground mt-1">PDF, DOCX, PPTX (Max. 10MB)</p>
+              <div className="relative">
+                <input
+                  type="file"
+                  multiple
+                  accept=".pdf,.docx,.pptx"
+                  className="absolute inset-0 z-50 h-full w-full cursor-pointer opacity-0"
+                  onChange={handleFileUpload}
+                />
+                <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 p-10 text-center">
+                  <UploadCloud className="mb-4 h-10 w-10 text-muted-foreground/50" />
+                  <p className="text-sm font-medium">Fayllarni tanlang yoki tashlang</p>
+                  <p className="text-xs text-muted-foreground mt-1">PDF, DOCX, PPTX (Max. 10MB)</p>
+                </div>
               </div>
 
               {downloads.length > 0 && (
@@ -259,13 +300,26 @@ export default function AdminArticleEdit() {
                       key={idx}
                       className="flex items-center justify-between rounded-md border p-2 text-sm"
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 truncate">
                         <FileIcon size={14} className="text-primary" />
                         <span className="truncate max-w-[150px]">{file.filename}</span>
+                        <Badge variant="outline" className="text-[10px]">
+                          {file.sizeMB}MB
+                        </Badge>
                       </div>
-                      <Badge variant="secondary" className="text-[10px]">
-                        {file.type}
-                      </Badge>
+                      <div className="flex items-center gap-2 text-uz">
+                        <Badge variant="secondary" className="text-[10px]">
+                          {file.type}
+                        </Badge>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                          onClick={() => removeDownload(idx)}
+                        >
+                          <X size={14} />
+                        </Button>
+                      </div>
                     </div>
                   ))}
                 </div>

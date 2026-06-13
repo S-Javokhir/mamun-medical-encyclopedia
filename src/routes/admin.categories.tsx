@@ -9,6 +9,7 @@ import {
   Folder,
   FileText,
 } from "lucide-react";
+import { toast } from "sonner";
 import { NavItem } from "../data/library";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -114,6 +115,10 @@ export default function AdminCategories() {
         },
       ]);
     }
+    
+    toast.success("Muvaffaqiyatli qo'shildi", {
+      description: "Yangi kategoriya ierarxiyaga qo'shildi."
+    });
 
     setIsAddOpen(false);
     setNewItem({ title: "", englishTitle: "" });
@@ -144,6 +149,11 @@ export default function AdminCategories() {
       const slug = targetItem.title.toLowerCase().replace(/\s+/g, "-");
       updateDepartments(departments.filter((d) => d.slug !== slug));
     }
+    
+    toast.success("Muvaffaqiyatli o'chirildi", {
+      description: "Kategoriya va uning tarkibi olib tashlandi."
+    });
+    
     setIdToDelete(null);
   };
 

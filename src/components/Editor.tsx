@@ -22,15 +22,17 @@ const toolbarOptions = [
 export const Editor = ({ content, onChange, placeholder }: EditorProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<Quill | null>(null);
+  // Keep the latest onChange always accessible without re-creating the editor
   const onChangeRef = useRef(onChange);
-  // Track if the editor has been initialized with content already
-  const initializedRef = useRef(false);
+  // Capture the INITIAL content value so we can set it once on mount
+  const initialContentRef = useRef(content);
 
-  // Keep onChange ref up to date without re-creating the editor
+  // Keep onChange ref up to date
   useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
 
+  // Create Quill once on mount — never recreate
   useEffect(() => {
     if (!containerRef.current || quillRef.current) return;
 
@@ -40,18 +42,17 @@ export const Editor = ({ content, onChange, placeholder }: EditorProps) => {
       modules: {
         toolbar: toolbarOptions,
         clipboard: {
-          // Allow Google Docs/Word HTML paste with images
           matchVisual: false,
         },
       },
     });
 
-    // Set initial content
-    if (content) {
-      quill.clipboard.dangerouslyPasteHTML(content);
+    // Set initial content ONCE using the captured ref value
+    if (initialContentRef.current) {
+      quill.clipboard.dangerouslyPasteHTML(initialContentRef.current);
     }
 
-    // Handle image paste from clipboard (files like screenshots)
+    // Handle image paste from clipboard (screenshots, etc.)
     quill.root.addEventListener("paste", (e: ClipboardEvent) => {
       const items = e.clipboardData?.items;
       if (!items) return;
@@ -61,7 +62,6 @@ export const Editor = ({ content, onChange, placeholder }: EditorProps) => {
           e.preventDefault();
           const file = item.getAsFile();
           if (!file) continue;
-
           const reader = new FileReader();
           reader.onload = (ev) => {
             const src = ev.target?.result as string;
@@ -81,26 +81,7 @@ export const Editor = ({ content, onChange, placeholder }: EditorProps) => {
     });
 
     quillRef.current = quill;
-  }, []);
-
-  // Sync external content changes — only when editor has NOT been initialized yet
-  useEffect(() => {
-    const quill = quillRef.current;
-    if (!quill) return;
-    // Only set content once (initial load). After that, user is in control.
-    if (initializedRef.current) return;
-
-    const currentHTML = quill.root.innerHTML;
-    const normalizedContent = content || "";
-    const normalizedCurrent = currentHTML === "<p><br></p>" ? "" : currentHTML;
-
-    if (normalizedContent && normalizedContent !== normalizedCurrent) {
-      quill.clipboard.dangerouslyPasteHTML(normalizedContent);
-      initializedRef.current = true;
-    } else if (normalizedContent === "") {
-      initializedRef.current = true;
-    }
-  }, [content]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="w-full rounded-lg border bg-background overflow-hidden shadow-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">

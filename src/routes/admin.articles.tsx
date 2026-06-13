@@ -136,7 +136,11 @@ export default function AdminArticles() {
                       article.departmentSlug}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-sm">{article.publishedAt}</TableCell>
+                <TableCell className="text-sm">
+                  {article.publishedAt.includes("T") 
+                    ? article.publishedAt.split("T")[0] 
+                    : article.publishedAt}
+                </TableCell>
                 <TableCell>
                   <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
                     Nashr etilgan

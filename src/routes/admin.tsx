@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { Button } from "../components/ui/button";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { Toaster } from "../components/ui/sonner";
 
 export default function AdminLayout() {
   const { isAuthenticated, logout } = useAuth();
@@ -99,7 +100,6 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 overflow-y-auto">
         <header className="flex h-16 items-center border-b bg-background px-8">
           <h1 className="text-xl font-semibold">
@@ -110,6 +110,7 @@ export default function AdminLayout() {
           <Outlet />
         </div>
       </main>
+      <Toaster position="top-center" />
     </div>
   );
 }

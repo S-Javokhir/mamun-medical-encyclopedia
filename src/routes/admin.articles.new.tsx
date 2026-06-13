@@ -46,7 +46,9 @@ export default function AdminArticleNew() {
 
   const handleSave = () => {
     if (!title || !departmentSlug || !professorId) {
-      toast.error("❌ Iltimos, sarlavha, bo'lim va muallif maydonlarini to'ldiring.");
+      toast.error("Ma'lumotlar to'liq emas", { 
+        description: "Iltimos, sarlavha, bo'lim va muallif maydonlarini to'ldiring." 
+      });
       return;
     }
 
@@ -65,10 +67,14 @@ export default function AdminArticleNew() {
 
     try {
       addArticle(newArticle);
-      toast.success("✅ Yangi maqola muvaffaqiyatli qo'shildi!");
+      toast.success("Muvaffaqiyatli qo'shildi", { 
+        description: "Yangi maqola ro'yxatga kiritildi." 
+      });
       navigate("/admin/articles");
     } catch {
-      toast.error("❌ Xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.");
+      toast.error("Xatolik", { 
+        description: "Yangi maqolani qo'shishda xatolik yuz berdi." 
+      });
     }
   };
 
@@ -312,14 +318,19 @@ export default function AdminArticleNew() {
                           {file.sizeMB}MB
                         </Badge>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6"
-                        onClick={() => removeDownload(idx)}
-                      >
-                        <X size={14} />
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="text-[10px]">
+                          {file.type}
+                        </Badge>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                          onClick={() => removeDownload(idx)}
+                        >
+                          <X size={14} />
+                        </Button>
+                      </div>
                     </div>
                   ))}
                 </div>
