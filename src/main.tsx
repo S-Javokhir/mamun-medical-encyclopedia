@@ -15,6 +15,7 @@ import AdminArticleNew from "./routes/admin.articles.new";
 import AdminArticleEdit from "./routes/admin.articles.edit";
 import AdminGlossary from "./routes/admin.glossary";
 import AdminCategories from "./routes/admin.categories";
+import AdminProfessors from "./routes/admin.professors";
 import LoginPage from "./routes/login";
 import { ScrollToTop } from "./components/ScrollToTop";
 import "./styles.css";
@@ -44,7 +45,7 @@ if (rootElement) {
             <Route path="articles/edit/:id" element={<AdminArticleEdit />} />
             <Route path="glossary" element={<AdminGlossary />} />
             <Route path="categories" element={<AdminCategories />} />
-            <Route path="professors" element={<div>Professorlar (Tez orada)</div>} />
+            <Route path="professors" element={<AdminProfessors />} />
           </Route>
         </Routes>
       </BrowserRouter>

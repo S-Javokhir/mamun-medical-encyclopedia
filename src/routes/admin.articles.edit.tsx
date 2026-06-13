@@ -6,7 +6,7 @@ import {
   X,
   Plus,
   Trash2,
-  Image as ImageIcon,
+  Volume2,
   Link as LinkIcon,
   Type,
   Table as TableIcon,
@@ -169,15 +169,6 @@ export default function AdminArticleEdit() {
                   placeholder="Masalan: Kallaning ichki asos tuzilishi"
                 />
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">ICD-11 kodi</label>
-                  <Input
-                    value={icd11}
-                    onChange={(e) => setIcd11(e.target.value)}
-                    placeholder="Masalan: FA01.0"
-                  />
-                </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Bo'lim (Kategoriya)</label>
                   <Select value={departmentSlug} onValueChange={setDepartmentSlug}>
@@ -193,15 +184,6 @@ export default function AdminArticleEdit() {
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Qisqacha mazmuni (Excerpt)</label>
-                <Textarea
-                  value={excerpt}
-                  onChange={(e) => setExcerpt(e.target.value)}
-                  placeholder="Maqola haqida qisqacha ma'lumot..."
-                />
-              </div>
             </CardContent>
           </Card>
 
@@ -244,6 +226,29 @@ export default function AdminArticleEdit() {
                       content={section.paragraphs[0] || ""}
                       onChange={(html) => updateSection(section.id, "paragraphs", [html])}
                     />
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium flex items-center gap-2">
+                        <Volume2 size={14} /> Audio URL (Ixtiyoriy)
+                      </label>
+                      <Input
+                        value={section.audioUrl || ""}
+                        onChange={(e) => updateSection(section.id, "audioUrl", e.target.value)}
+                        placeholder="https://...mp3"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium flex items-center gap-2">
+                        <LinkIcon size={14} /> Video URL (Ixtiyoriy)
+                      </label>
+                      <Input
+                        value={section.videoUrl || ""}
+                        onChange={(e) => updateSection(section.id, "videoUrl", e.target.value)}
+                        placeholder="YouTube embed URL..."
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>

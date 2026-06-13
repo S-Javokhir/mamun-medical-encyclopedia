@@ -6,7 +6,7 @@ import {
   X,
   Plus,
   Trash2,
-  Image as ImageIcon,
+  Volume2,
   Link as LinkIcon,
   Type,
   Table as TableIcon,
@@ -55,11 +55,11 @@ export default function AdminArticleNew() {
     const newArticle: Article = {
       id: `art-${Date.now()}`,
       title,
-      icd11,
+      icd11: "",
       departmentSlug,
       professorId,
       publishedAt: new Date().toISOString().split("T")[0],
-      excerpt,
+      excerpt: "",
       sections,
       downloads,
       badges: ["NEW"],
@@ -155,15 +155,6 @@ export default function AdminArticleNew() {
                   placeholder="Masalan: Kallaning ichki asos tuzilishi"
                 />
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">ICD-11 kodi</label>
-                  <Input
-                    value={icd11}
-                    onChange={(e) => setIcd11(e.target.value)}
-                    placeholder="Masalan: FA01.0"
-                  />
-                </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Bo'lim (Kategoriya)</label>
                   <Select value={departmentSlug} onValueChange={setDepartmentSlug}>
@@ -179,16 +170,6 @@ export default function AdminArticleNew() {
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Qisqacha mazmuni (Excerpt)</label>
-                <Textarea
-                  value={excerpt}
-                  onChange={(e) => setExcerpt(e.target.value)}
-                  placeholder="Maqola haqida qisqacha ma'lumot..."
-                  rows={3}
-                />
-              </div>
             </CardContent>
           </Card>
 
@@ -236,12 +217,12 @@ export default function AdminArticleNew() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm font-medium flex items-center gap-2">
-                        <ImageIcon size={14} /> Rasm URL (Ixtiyoriy)
+                        <Volume2 size={14} /> Audio URL (Ixtiyoriy)
                       </label>
                       <Input
-                        value={section.image || ""}
-                        onChange={(e) => updateSection(section.id, "image", e.target.value)}
-                        placeholder="https://..."
+                        value={section.audioUrl || ""}
+                        onChange={(e) => updateSection(section.id, "audioUrl", e.target.value)}
+                        placeholder="https://...mp3"
                       />
                     </div>
                     <div className="space-y-2">
@@ -335,23 +316,6 @@ export default function AdminArticleNew() {
                   ))}
                 </div>
               )}
-            </CardContent>
-          </Card>
-
-          {/* Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Sozlamalar</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Nashr qilish</span>
-                <Badge>Active</Badge>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Teglar (Tags)</label>
-                <Input placeholder="BIOLOGY, ANATOMY..." />
-              </div>
             </CardContent>
           </Card>
         </div>

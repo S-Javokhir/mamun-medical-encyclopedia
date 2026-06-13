@@ -32,6 +32,7 @@ export type ArticleSection = {
   image?: string;
   imageCaption?: string;
   videoUrl?: string;
+  audioUrl?: string;
   table?: {
     headers: string[];
     rows: string[][];

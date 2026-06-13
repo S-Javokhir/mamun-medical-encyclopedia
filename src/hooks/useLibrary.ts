@@ -5,6 +5,7 @@ import {
   GlossaryTerm,
   NavItem,
   Department,
+  Professor,
   articles as initialArticles,
   glossaryTerms as initialGlossary,
   medicalCurriculumData as initialCategories,
@@ -19,7 +20,7 @@ interface LibraryData {
   glossary: GlossaryTerm[];
   categories: NavItem[];
   departments: Department[];
-  professors: any[]; // We can use Professor type if we import it
+  professors: Professor[];
 }
 
 // Helper: save directly to localStorage inside mutations to avoid the
@@ -68,6 +69,7 @@ export function useLibrary() {
           glossary: mergedGlossary,
           categories: parsed.categories || defaults.categories,
           departments: parsed.departments || defaults.departments,
+          professors: parsed.professors || defaults.professors,
         };
       } catch (e) {
         console.error("Failed to parse saved library data", e);
@@ -215,6 +217,47 @@ export function useLibrary() {
     });
   };
 
+  // ─── Professor CRUD ────────────────────────────────────────────────────────
+
+  const addProfessor = (prof: Professor) => {
+    setData((prev) => {
+      const newData = { ...prev, professors: [prof, ...prev.professors] };
+      saveToStorage(newData);
+      return newData;
+    });
+    toast.success("Muvaffaqiyatli qo'shildi", {
+      description: "Yangi muallif ro'yxatga kiritildi.",
+    });
+  };
+
+  const updateProfessor = (prof: Professor) => {
+    setData((prev) => {
+      const newData = {
+        ...prev,
+        professors: prev.professors.map((p) => (p.id === prof.id ? prof : p)),
+      };
+      saveToStorage(newData);
+      return newData;
+    });
+    toast.success("Muvaffaqiyatli yangilandi", {
+      description: "Muallif ma'lumotlari yangilandi.",
+    });
+  };
+
+  const deleteProfessor = (id: string) => {
+    setData((prev) => {
+      const newData = {
+        ...prev,
+        professors: prev.professors.filter((p) => p.id !== id),
+      };
+      saveToStorage(newData);
+      return newData;
+    });
+    toast.success("Muvaffaqiyatli o'chirildi", {
+      description: "Muallif ro'yxatdan olib tashlandi.",
+    });
+  };
+
   // ─── Selectors ────────────────────────────────────────────────────────────
 
   const getArticle = useCallback(
@@ -267,6 +310,9 @@ export function useLibrary() {
     deleteGlossaryTerm,
     updateCategories,
     updateDepartments,
+    addProfessor,
+    updateProfessor,
+    deleteProfessor,
     getArticle,
     getLatestArticles,
     getProfessor,

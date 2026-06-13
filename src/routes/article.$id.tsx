@@ -1,5 +1,5 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { ChevronRight, ChevronDown, FileText, Download, ArrowLeft, Quote } from "lucide-react";
+import { ChevronRight, ChevronDown, FileText, Download, ArrowLeft, Quote, Volume2 } from "lucide-react";
 import {
   getArticle,
   getProfessor,
@@ -157,6 +157,24 @@ export default function ArticleView() {
                         </figcaption>
                       )}
                     </figure>
+                  )}
+                  {section.audioUrl && (
+                    <div className="my-10 overflow-hidden rounded-3xl bg-muted/30 p-6 ring-1 ring-border">
+                      <div className="flex items-center gap-4">
+                        <div className="shrink-0 rounded-2xl bg-primary/10 p-3 text-primary">
+                          <Volume2 size={24} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="mb-2 text-sm font-bold text-foreground">
+                            Audio qo'llanma (MP3)
+                          </div>
+                          <audio controls className="w-full h-10 accent-primary">
+                            <source src={section.audioUrl} type="audio/mpeg" />
+                            Sizning brauzeringiz audio elementni qo'llab-quvvatlamaydi.
+                          </audio>
+                        </div>
+                      </div>
+                    </div>
                   )}
                   {section.videoUrl && (
                     <div className="my-10 overflow-hidden rounded-3xl bg-muted/30 p-4 ring-1 ring-border">
