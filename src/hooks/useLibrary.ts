@@ -9,6 +9,7 @@ import {
   glossaryTerms as initialGlossary,
   medicalCurriculumData as initialCategories,
   departments as initialDepartments,
+  professors as initialProfessors,
 } from "../data/library";
 
 const STORAGE_KEY = "mamun_library_persistent_data";
@@ -18,6 +19,7 @@ interface LibraryData {
   glossary: GlossaryTerm[];
   categories: NavItem[];
   departments: Department[];
+  professors: any[]; // We can use Professor type if we import it
 }
 
 // Helper: save directly to localStorage inside mutations to avoid the
@@ -38,6 +40,7 @@ export function useLibrary() {
       glossary: initialGlossary,
       categories: initialCategories,
       departments: initialDepartments,
+      professors: initialProfessors,
     };
 
     if (saved) {
@@ -233,6 +236,27 @@ export function useLibrary() {
     [data.articles],
   );
 
+  const getProfessor = useCallback(
+    (id: string) => {
+      return data.professors.find((p) => p.id === id);
+    },
+    [data.professors],
+  );
+
+  const getProfessorArticles = useCallback(
+    (profId: string) => {
+      return data.articles.filter((a) => a.professorId === profId);
+    },
+    [data.articles],
+  );
+
+  const getDepartment = useCallback(
+    (slug: string) => {
+      return data.departments.find((d) => d.slug === slug);
+    },
+    [data.departments],
+  );
+
   return {
     articles: data.articles,
     glossary: data.glossary,
@@ -248,5 +272,9 @@ export function useLibrary() {
     updateDepartments,
     getArticle,
     getLatestArticles,
+    getProfessor,
+    getProfessorArticles,
+    getDepartment,
+    professors: data.professors,
   };
 }

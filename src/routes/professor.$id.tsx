@@ -1,10 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowRight, GraduationCap } from "lucide-react";
-import { formatDate, getDepartment, getProfessor, getProfessorArticles } from "../data/library";
+import { useLibrary } from "../hooks/useLibrary";
+import { formatDate, getDepartment } from "../data/library";
 import { PageSkeleton } from "../components/Skeleton";
 
 export default function ProfessorProfile() {
   const { id } = useParams();
+  const { getProfessor, getProfessorArticles } = useLibrary();
   const prof = getProfessor(id || "");
   const items = getProfessorArticles(id || "");
 

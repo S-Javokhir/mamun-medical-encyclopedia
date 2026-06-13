@@ -1,12 +1,14 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ChevronRight, ArrowRight, BookOpen, Layers } from "lucide-react";
-import { getNavItem, findNavItemPath } from "../data/library";
 import { DeptIcon } from "../components/DeptIcon";
+import { useLibrary } from "../hooks/useLibrary";
+import { getNavItem, findNavItemPath } from "../data/library";
 
 export default function LibraryCategory() {
   const { id } = useParams();
-  const item = getNavItem(id || "");
-  const path = findNavItemPath(id || "");
+  const { categories } = useLibrary();
+  const item = getNavItem(id || "", categories);
+  const path = findNavItemPath(id || "", categories);
 
   if (!item || !path) return <Navigate to="/" replace />;
 

@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
 import { Search, FileText, Files, ArrowRight } from "lucide-react";
-import { departments } from "../data/library";
+import { useLibrary } from "../hooks/useLibrary";
 import { DeptIcon } from "../components/DeptIcon";
 
 export default function Departments() {
+  const { departments } = useLibrary();
   const [q, setQ] = useState("");
 
   const filtered = useMemo(() => {
@@ -12,7 +13,7 @@ export default function Departments() {
     return departments.filter(
       (d) => d.name.toLowerCase().includes(term) || d.blurb.toLowerCase().includes(term),
     );
-  }, [q]);
+  }, [q, departments]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">

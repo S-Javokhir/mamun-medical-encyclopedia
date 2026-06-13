@@ -56,9 +56,9 @@ function SidebarNode({
 
 export default function ArticleView() {
   const { id } = useParams();
-  const { getArticle } = useLibrary();
+  const { getArticle, categories } = useLibrary();
   const article = getArticle(id || "");
-  const path = findNavItemPath(id || "");
+  const path = findNavItemPath(id || "", categories);
 
   if (!article || !path) return <Navigate to="/" replace />;
 

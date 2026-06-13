@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
 import { Search, Book } from "lucide-react";
-import { glossaryTerms, getGlossaryByLetter } from "../data/library";
+import { useLibrary } from "../hooks/useLibrary";
 
 export default function Glossary() {
+  const { glossary } = useLibrary();
   const [activeLetter, setActiveLetter] = useState("A");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -13,14 +14,14 @@ export default function Glossary() {
 
   const filteredTerms = useMemo(() => {
     if (searchTerm) {
-      return glossaryTerms.filter(
+      return glossary.filter(
         (t) =>
           t.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
           t.definition.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
-    return getGlossaryByLetter(activeLetter);
-  }, [activeLetter, searchTerm]);
+    return glossary.filter((t) => t.term.toLowerCase().startsWith(activeLetter.toLowerCase()));
+  }, [glossary, activeLetter, searchTerm]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
